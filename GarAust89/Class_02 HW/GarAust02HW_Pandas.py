@@ -302,3 +302,28 @@ ax.set_ylabel('Runtime')
 ax.set_zlabel('Score')
  
 plt.show()
+
+### Creating a 3D Scatter of films with a runtime over 150 minutes 
+
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+ 
+x = data.year[data.runtime>150]
+y = data.runtime[data.runtime>150]
+z = data.score[data.runtime>150]
+ 
+ax.scatter(x, y, z, c='r', marker='o')
+ 
+ax.set_xlabel('Year')
+ax.set_ylabel('Runtime')
+ax.set_zlabel('Score')
+ 
+plt.show() 
+
+## finding the average score of movies with run time over 150 minutes and over 200 minutes
+
+data.score[data.runtime>100].sum()/data.score[data.runtime>100].count()
+data.score[data.runtime>150].sum()/data.score[data.runtime>150].count()
+data.score[data.runtime>200].sum()/data.score[data.runtime>200].count()
+
+## From the output of the three above functions we can see that the rating of movies increases with run time
