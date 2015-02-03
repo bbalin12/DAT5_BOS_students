@@ -37,7 +37,7 @@ df.fillna(0, inplace = True)
 
 #conn = sqlite3.connect('/Users/YihanLi/Documents/SQLite/lahman2013.sqlite')
 
-df.to_sql('In_class', conn, if_exists='replace', index=False)
+df.to_sql('inclass_result', conn, if_exists='replace', index=False)
 
 
 
