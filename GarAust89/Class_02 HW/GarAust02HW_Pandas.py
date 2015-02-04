@@ -326,5 +326,9 @@ data.score[data.runtime>100].sum()/data.score[data.runtime>100].count()
 data.score[data.runtime>150].sum()/data.score[data.runtime>150].count()
 data.score[data.runtime>200].sum()/data.score[data.runtime>200].count()
 
+<<<<<<< HEAD:GarAust89/Class_02 HW/GarAust02HW_Pandas.py
+## From the output of the three above functions we can see that the rating of movies increases with run time
+=======
 ## From the output of the three above functions we can see that the rating of movies increases with run time
 ## However there are not as many longer movies and therefore we have a smaller sample size and cannot rely upon this result
+>>>>>>> origin/master:GarAust89/GarAust02HW_Pandas.py
