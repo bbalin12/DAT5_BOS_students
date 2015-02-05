@@ -75,3 +75,60 @@ SELECT AVG(yankeeCareerAtBats) FROM
         WHERE syy.secondYankeeYear >= 1980 AND b.teamID = 'NYA'
         GROUP BY b.playerID);
 -- 644.576 at-bats
+
+
+-- Extra Queries
+
+-- 1. Who were the top 3 highest-paid players in 2010?
+SELECT m.nameFirst, m.nameLast, SUM(s.salary) as total_salary
+FROM Salaries s
+INNER JOIN Master m
+ON m.playerID = s.playerID
+WHERE s.yearID = 2010
+GROUP BY s.playerID, s.yearID
+ORDER BY total_salary DESC;
+-- Alex Rodriguez - $33,000,000
+-- CC Sabathia - $24,285,714
+-- Derek Jeter - $22,600,000
+
+
+-- 2. What was the mean player salary in 2010 and which which players were 'highly paid' (over this)
+SELECT m.nameFirst, m.nameLast, SUM(s.salary) as total_player_salary, CASE WHEN SUM(s.salary) > avg.overall_avg_salary THEN 1 ELSE 0 END AS highly_paid
+FROM Salaries s
+INNER JOIN Master m
+ON s.playerID = m.playerID
+LEFT JOIN (
+        SELECT AVG(s.salary) as overall_avg_salary
+        FROM Salaries s
+        WHERE s.yearID = 2010
+        GROUP BY yearID) avg
+WHERE s.yearID = 2010
+GROUP BY s.playerID, s.yearID
+ORDER BY total_player_salary DESC;
+-- Avg salary is $3,278,746.83
+-- 254 players paid over this
+
+
+-- 3. Which school has sent the most players to the majors?
+-- (Since some players played at multiple schools, technically
+-- "Which school has had the most future MLB players play for it?")
+SELECT s.schoolName, COUNT(sp.playerID) as num_players_from
+FROM SchoolsPlayers sp
+LEFT JOIN Schools s
+ON sp.schoolID = s.schoolID
+WHERE sp.schoolID IS NOT NULL
+GROUP BY sp.schoolID
+ORDER by num_players_from DESC;
+-- University of Southern California with 102
+
+
+-- 4. Which postwar manager has won the most World Series?
+SELECT m.nameFirst, m.nameLast, COUNT(mg.playerID) as ws_wins  FROM SeriesPost sp
+LEFT JOIN Managers mg
+ON sp.yearID = mg.yearID AND sp.teamIDwinner = mg.teamID
+LEFT JOIN Master m
+ON mg.playerID = m.playerID
+WHERE sp.yearID >= 1945 AND sp.round = 'WS'
+GROUP BY mg.playerID
+ORDER BY ws_wins DESC
+-- Casey Stengel, with 7 WS wins
