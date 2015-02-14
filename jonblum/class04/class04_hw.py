@@ -8,7 +8,7 @@ class 4 hw
 import sqlite3
 import pandas as pd
 
-conn = sqlite3.connect('/Users/jon/Documents/Code/datbos05/class4/lahman2013.sqlite')
+conn = sqlite3.connect('/Users/jon/Documents/Code/datbos05/data/lahman2013.sqlite')
 
 sql = """
 SELECT AVG(yankeeCareerAtBats) FROM
@@ -33,5 +33,22 @@ SELECT AVG(yankeeCareerAtBats) FROM
 df = pd.read_sql(sql,conn)
 
 df.to_sql('RecentYankeeCareerAtBats',conn,if_exists = 'replace')
+
+conn.close()
+
+#############
+
+conn = sqlite3.connect('/Users/jon/Documents/Code/datbos05/data/lahman2013.sqlite')
+
+sql = """
+SELECT *
+FROM Master m
+"""
+
+df2 = pd.read_sql(sql,conn)
+
+df2 = df2[df2.height < 65]
+
+df2.to_sql('ShortPlayers',conn,if_exists = 'replace')
 
 conn.close()

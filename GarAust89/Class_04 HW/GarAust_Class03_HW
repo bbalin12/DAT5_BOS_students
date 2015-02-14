@@ -1,0 +1,78 @@
+## In class work for SQL 
+
+# Q1: Player with most at bats in a season
+select m.nameGiven, max(b.AB) as most_atbats
+from master m 
+inner join batting b 
+on m.playerID = b.playerID
+# Answer: James Calvin: 716 AB's
+
+# Q2: Player with the most AB's in baseball history
+select m.nameGiven, sum(b.AB) as most_atbats
+from master m 
+inner join batting b 
+on m.playerID = b.playerID
+group by m.NameGiven
+order by most_atbats desc
+limit 1
+# Answer: John Joseph
+
+# Q3: Find the average number of AB's of players in their rookie season
+select avg(b.avg_player_ABs) as AVG_Rookie_Year_ABs
+from (select c.playerID, min(c.yearID) as rookie_year, avg(c.AB) as avg_player_ABs
+from batting c
+group by c.playerID) b
+# Answer: Average Rookie Season AB's: 88.27
+
+# Q4: Average AB's for players in their final season after 1980
+select avg(b.avg_player_ABs) as AVG_lastyear_ABs
+from (select c.playerID, max(c.yearID) as lastyear, avg(c.AB) as avg_player_ABs
+from batting c
+where c.yearID>1980
+group by c.playerID) b
+# Answer: Average AB's for final season after 1980: 87.73
+
+# Q5: Average Yankee's at bat
+select m.nameGiven, c.avg_career_ABs from master m
+left outer join (select a.playerID,avg(a.AB) as avg_career_ABs
+from batting a
+where a.teamID = 'NYA'
+and a.yearID >= 1979
+group by a.playerID) c
+on m.playerID = c.playerID
+where c.avg_career_ABs is not null
+order by c.avg_career_ABs desc
+# Answer: 
+
+#################################################
+############## Homework Questions ###############
+#################################################
+
+# Q1: Finding which team has won the most games historically and ordering the teams by most wins 
+# and limiting the output to the top 10 teams 
+select name, sum(wins) as Total_Victorys
+from Teams
+group by name
+order by Total_Victorys asc
+limit 10
+
+# Q2: Finding the names of the highest paid players in the league #
+select coalesce(b.nameFirst,"") || coalesce(b.nameLast,"") as PlayerName,a.teamID,a.salary
+from Master b
+left outer join Salaries a
+on a.playerID = b.playerID
+order by a.salary desc
+
+# Q3: Find the City That produces the best home run hitters #
+select coalesce(b.nameFirst,"") || coalesce(b.nameLast,"") as PlayerName, max(b.birthCity) as BirthCity, b.birthCountry as BirthCountry, sum(a.HR) as Career_HRs
+from Masters b left outer join Batting a
+on a.playerID = b.playerID
+where a.HR>150 
+group by PlayerName
+
+# Q4: Find a list of all players who were inducted into the Hall of Fame they're key batting stats #
+select coalesce(b.nameFirst,"") || coalesce(b.nameLast,"") as PlayerName, c.Career_HRs, c.Games, c.At_Bats from masters b left outer join (select max(d.playerID) as playerID, sum(d.HR) as Career_HRs, sum(d.G) as Games, sum(d.AB) as At_Bats, max(e.yearID) as year_inducted from batting d left outer join HallOfFame e
+	on d.playerID = e.playerID
+	group by playerID) c
+	on b.playerID = c.playerID
+	where year_inducted is not null
