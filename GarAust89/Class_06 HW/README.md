@@ -93,7 +93,7 @@ Examining the same data for Barry's Model we can see that there is a a lot of va
 ### Examining the model output 
 
 **Below are the regression results for the average model:** 
-
+```
                              OLS Regression Results                            
 ===============================================================================
 Dep. Variable:     avg_runs_per_player   R-squared:                       0.952
@@ -122,13 +122,15 @@ Prob(Omnibus):                  0.677   Jarque-Bera (JB):                0.883
 Skew:                          -0.218   Prob(JB):                        0.643
 Kurtosis:                       2.689   Cond. No.                     2.51e+03
 ==============================================================================
+```
 
-Interesting, stolen bases, at bats and intentional walks all have negative coefficients - this seems counter intuitive.
+Interestingly, stolen bases, at bats and intentional walks all have negative coefficients - this seems counter intuitive.
 StrikeOuts also have a positive coefficient which is also counter-intuitive. R-sqaured and Adjusted R-Sqaured are both 
 high however there is a possibility of overfitting in the model. 
 
 **Below are the results for Barry's Model**
 
+```
                             OLS Regression Results                            
 ==============================================================================
 Dep. Variable:            annual_runs   R-squared:                       0.942
@@ -155,3 +157,4 @@ Prob(Omnibus):                  0.864   Jarque-Bera (JB):                0.026
 Skew:                          -0.079   Prob(JB):                        0.987
 Kurtosis:                       2.941   Cond. No.                     2.89e+03
 ==============================================================================
+```
