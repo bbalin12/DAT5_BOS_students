@@ -42,3 +42,38 @@ df_ind = pandas.read_sql(sql_individ,conn)
 
 conn.close()
 ```
+
+### Dummy Categorical Variable Creation
+According to Wikipedia: Conditioning and diets improved in the 1980s as teams and coaches begin to 
+develop a more specialized approach. A dummy variable will be included to determine whether this 
+supposed change had any statistical impact. A dummy varaible has been included for Barry Bonds long 
+injury layoff in 2005 and also for the years during World War 2. The following code was used to create
+these variables: 
+
+```
+df_avg['post_1980'] = 0
+df_avg.post_1980[df_avg.yearID>=1980]=1
+
+## Adding in a world war 2 dummy variable ##
+df_avg['WW2'] = 0
+df_avg.WW2[(df_avg.yearID>=1939)&(df_avg.yearID<=1945)] = 1
+
+## Barry Bonds had multiple surgeries and injuries in 2005 - include a dummy for these
+df_ind['BarryGoesToHospital']=0
+df_ind.BarryGoesToHospital[df_ind.yearID>=2007] = 1
+```
+
+### Creating two initial models
+The following two models were created:
+
+```
+# starting out with the most obvisious connection -- more runs means more hits 
+est_avg = smf.ols(formula='avg_runs_per_player ~ avg_hits_per_player + avg_stolen_bases_per_player+avg_strikeouts + WW2+post_1980 + average_HomeRuns + avg_total_intentional_walks + average_AtBats', data = df_avg).fit()
+est_barry = smf.ols(formula = 'annual_runs ~ hits + homers + Games + StrikeOuts + BarryGoesToHospital + At_Bats',data = df_ind).fit()
+
+# Create a y-hat colum in our data frame
+df_avg['yhat_avg'] = est_avg.predict(df_avg)
+df_ind['yhat_barry'] = est_barry.predict(df_ind)
+```
+
+### Checking for Heteroskedasticity in the Residuals
