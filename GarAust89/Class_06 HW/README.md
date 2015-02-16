@@ -80,4 +80,4 @@ df_ind['yhat_barry'] = est_barry.predict(df_ind)
 
 The first plot below plots the residuals on the y-axis and the average hits per player on the x-axis
 
-![Avg_Model_hitsvsresiduals](
+![Avg_Model_hitsvsresiduals](https://github.com/GarAust89/DAT5_BOS_students/blob/master/GarAust89/Class_06%20HW/Avg_Model_hitsvsresiduals.png)
