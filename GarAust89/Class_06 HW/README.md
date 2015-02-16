@@ -77,3 +77,7 @@ df_ind['yhat_barry'] = est_barry.predict(df_ind)
 ```
 
 ### Checking for Heteroskedasticity in the Residuals
+
+The first plot below plots the residuals on the y-axis and the average hits per player on the x-axis
+
+![Avg_Model_hitsvsresiduals](
