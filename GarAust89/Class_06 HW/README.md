@@ -194,7 +194,7 @@ deviates by 6.5%
 To test the Average Model - Out of Sample we will use data from 2005 onwards and to test Barry's 
 model out of sample we will use playing data from the career of Derek Jeter
 
-** Calculating the averaeg percentage deviation from the actuals:** 
+**Calculating the average percentage deviation from the actuals:** 
 Average Model Deviation from the Actuals: 4.6%
 Barry's Model Deviation from the Actuals: 18.2%
 
@@ -204,7 +204,7 @@ unacceptable error rate. This is not really surprising as it is unlikely that on
 could be used to predict the number of runs for another player. We can conclude that the average model is far
 better at predicting the number of runs for a player in a season than using an individual player based model. 
 
-** A Good Solution:** 
+**A Good Solution:** 
 The best type of model might be an average model that is weighted depending on the number of hits players have 
 had in previous years. Potentially to build three average models, one for big hitters, one for average hitters and
 one for players who don't score many runs at all. We could then classify the players into groups and decide which
