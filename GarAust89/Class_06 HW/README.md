@@ -158,3 +158,56 @@ Skew:                          -0.079   Prob(JB):                        0.987
 Kurtosis:                       2.941   Cond. No.                     2.89e+03
 ==============================================================================
 ```
+
+In Barry's model the only significant variable is Home Runs. The signs of the other coefficients are as expected 
+but none of the variables are statistically significant. 
+
+### Rerunning the models and checking the RMSE 
+
+The models were run again with only the following varaibles included: 
+
+```
+# Re-run the models with StrikeOuts removed from both models #
+est_avg = smf.ols(formula='avg_runs_per_player ~ avg_hits_per_player + post_1980
++ average_HomeRuns', data = df_avg).fit()
+est_barry = smf.ols(formula = 'annual_runs ~ hits + Games + BarryGoesToHospital+
+At_Bats',data = df_ind).fit()
+```
+
+Next we will test to see how much the model deviates from the actuals on average:
+```
+percent_avg_dev = RMSE_avg/df_avg.avg_runs_per_player.mean()
+percent_avg_dev_barry = RMSE_ind/df_ind.annual_runs.mean()
+## using string formatting when printing the results
+print 'Average Model: average deviation:{0}%'.format(round(percent_avg_dev*100,1 ))
+print 'Barry Model: average deviation:{0}%'.format(round(percent_avg_dev_barry*100,1 ))
+```
+
+Average Model: average deviation:2.8%
+Barry Model: average deviation:6.5%
+
+The average model performs quite well and only deviates from the actuals by 2.8% however Barry's model
+deviates by 6.5%
+
+## Testing the Model - Out of Sample
+
+To test the Average Model - Out of Sample we will use data from 2005 onwards and to test Barry's 
+model out of sample we will use playing data from the career of Derek Jeter
+
+** Calculating the averaeg percentage deviation from the actuals:** 
+Average Model Deviation from the Actuals: 4.6%
+Barry's Model Deviation from the Actuals: 18.2%
+
+Out of Sample the average model deviates from the Actuals by 4.6% which is an increase over the insample test 
+but is still relatively accurate. However, Barry's model deviates from the actuals by 18.2% which is an 
+unacceptable error rate. This is not really surprising as it is unlikely that one players batting statistics
+could be used to predict the number of runs for another player. We can conclude that the average model is far
+better at predicting the number of runs for a player in a season than using an individual player based model. 
+
+** A Good Solution:** 
+The best type of model might be an average model that is weighted depending on the number of hits players have 
+had in previous years. Potentially to build three average models, one for big hitters, one for average hitters and
+one for players who don't score many runs at all. We could then classify the players into groups and decide which
+model to use to predict their runs for the next season.
+
+
