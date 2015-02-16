@@ -81,3 +81,11 @@ df_ind['yhat_barry'] = est_barry.predict(df_ind)
 The first plot below plots the residuals on the y-axis and the average hits per player on the x-axis
 
 ![Avg_Model_hitsvsresiduals](https://github.com/GarAust89/DAT5_BOS_students/blob/master/GarAust89/Class_06%20HW/Avg_Model_hitsvsresiduals.png)
+
+While there is quite a lot of variance in the error terms there does not appear to be any specific trends or obvious heteroskedasticity
+
+The next plot shows the residuals on the y-axis and Barry's Bonds annual hits on the x-axis
+
+![Barrys_model_hitsvsresiduals](https://github.com/GarAust89/DAT5_BOS_students/blob/master/GarAust89/Class_06%20HW/Barrys_model_hitsvsresiduals.png)
+
+Examining the same data for Barry's Model we can see that there is a a lot of variance in the error terms for Barry's Data however there are too few data points to be able to identify heteroskedasticity in the residuals
