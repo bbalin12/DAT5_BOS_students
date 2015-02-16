@@ -88,4 +88,70 @@ The next plot shows the residuals on the y-axis and Barry's Bonds annual hits on
 
 ![Barrys_model_hitsvsresiduals](https://github.com/GarAust89/DAT5_BOS_students/blob/master/GarAust89/Class_06%20HW/Barrys_model_hitsvsresiduals.png)
 
-Examining the same data for Barry's Model we can see that there is a a lot of variance in the error terms for Barry's Data however there are too few data points to be able to identify heteroskedasticity in the residuals
+Examining the same data for Barry's Model we can see that there is a a lot of variance in the error terms for Barry's Data however there are too few data points to be able to identify heteroskedasticity in the residuals. 
+
+### Examining the model output 
+
+**Below are the regression results for the average model:** 
+
+                             OLS Regression Results                            
+===============================================================================
+Dep. Variable:     avg_runs_per_player   R-squared:                       0.952
+Model:                             OLS   Adj. R-squared:                  0.946
+Method:                  Least Squares   F-statistic:                     160.0
+Date:                 Mon, 16 Feb 2015   Prob (F-statistic):           1.02e-39
+Time:                         12:45:23   Log-Likelihood:                -54.202
+No. Observations:                   74   AIC:                             126.4
+Df Residuals:                       65   BIC:                             147.1
+Df Model:                            8                                         
+===============================================================================================
+                                  coef    std err          t      P>|t|      [95.0% Conf. Int.]
+-----------------------------------------------------------------------------------------------
+Intercept                      -0.2668      1.055     -0.253      0.801        -2.374     1.840
+avg_hits_per_player             0.8226      0.077     10.637      0.000         0.668     0.977
+avg_stolen_bases_per_player    -0.3686      0.123     -2.997      0.004        -0.614    -0.123
+avg_strikeouts                  0.0370      0.036      1.039      0.303        -0.034     0.108
+WW2                             0.0635      0.259      0.245      0.807        -0.453     0.580
+post_1980                       0.3475      0.251      1.382      0.172        -0.155     0.850
+average_HomeRuns                0.6256      0.136      4.606      0.000         0.354     0.897
+avg_total_intentional_walks    -0.3877      0.217     -1.787      0.079        -0.821     0.046
+average_AtBats                 -0.0955      0.025     -3.876      0.000        -0.145    -0.046
+==============================================================================
+Omnibus:                        0.781   Durbin-Watson:                   2.066
+Prob(Omnibus):                  0.677   Jarque-Bera (JB):                0.883
+Skew:                          -0.218   Prob(JB):                        0.643
+Kurtosis:                       2.689   Cond. No.                     2.51e+03
+==============================================================================
+
+Interesting, stolen bases, at bats and intentional walks all have negative coefficients - this seems counter intuitive.
+StrikeOuts also have a positive coefficient which is also counter-intuitive. R-sqaured and Adjusted R-Sqaured are both 
+high however there is a possibility of overfitting in the model. 
+
+**Below are the results for Barry's Model**
+
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:            annual_runs   R-squared:                       0.942
+Model:                            OLS   Adj. R-squared:                  0.918
+Method:                 Least Squares   F-statistic:                     40.35
+Date:                Mon, 16 Feb 2015   Prob (F-statistic):           2.02e-08
+Time:                        12:49:13   Log-Likelihood:                -72.535
+No. Observations:                  22   AIC:                             159.1
+Df Residuals:                      15   BIC:                             166.7
+Df Model:                           6                                         
+=======================================================================================
+                          coef    std err          t      P>|t|      [95.0% Conf. Int.]
+---------------------------------------------------------------------------------------
+Intercept               0.4422      8.041      0.055      0.957       -16.698    17.582
+hits                    0.3020      0.251      1.204      0.247        -0.233     0.837
+homers                  0.7616      0.256      2.974      0.009         0.216     1.307
+Games                   0.3666      0.212      1.726      0.105        -0.086     0.819
+StrikeOuts              0.0114      0.219      0.052      0.959        -0.456     0.478
+BarryGoesToHospital    -9.8147      9.609     -1.021      0.323       -30.296    10.667
+At_Bats                -0.0357      0.107     -0.335      0.742        -0.263     0.191
+==============================================================================
+Omnibus:                        0.292   Durbin-Watson:                   1.806
+Prob(Omnibus):                  0.864   Jarque-Bera (JB):                0.026
+Skew:                          -0.079   Prob(JB):                        0.987
+Kurtosis:                       2.941   Cond. No.                     2.89e+03
+==============================================================================
