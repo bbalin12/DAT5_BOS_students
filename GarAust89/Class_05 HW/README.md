@@ -157,4 +157,6 @@ plt.plot(k_range,scores_pitchers)
 ```
 
 #### Optimal K Results
+Below are two plots for the Batting and Pitching datasets. 
+
 
