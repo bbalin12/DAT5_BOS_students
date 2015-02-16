@@ -50,130 +50,253 @@ pitchingsub b on a.playerID=b.playerID and a.yearID=b.yearID
 # to the SQLite file.
 conn = sqlite3.connect("C:\Users\jeppley\datascience\SQLite\lahman2013.sqlite")
 # creating an object contraining a string that has the SQL query. 
-sql = '''select a.playerID as playerID, max(a.inducted) as inducted, 
-sum(f.Games) as Games, sum(f.Hits) as Hits, sum(f.At_Bats) as At_Bats, 
-sum(f.Homers) as HomeRuns, sum(f.Field_Errors) as Field_Errors
-from HallOfFame a 
+sql = '''select h.*, 
+  b.b_atbat, b.b_runs, b.b_hits, b.b_hruns, b.b_stbas, b.b_strik,
+  p.p_years, p.p_wins, p.p_loss, p.p_shout, p.p_saves, p.p_eruns, p.p_stout, 
+  f.f_years, f.f_puts, f.f_assis, f.f_dplay, f.f_pass, f.catcher, f.pitcher, f.dhitter
+from 
+  (select playerid, max(case when inducted = 'Y' then 1 else 0 end) as inducted, max(yearid) as year
+   from halloffame 
+   where category = 'Player'
+   group by playerid) h
 left outer join 
-    (select b.G as Games, b.H as Hits, b.AB as At_Bats, b.HR as Homers,
-    b.playerID,e.Field_Errors from Batting b
-    left outer join 
-        (select d.playerID, d.E as Field_Errors,
-        d.DP as Double_Plays from Fielding d) e on b.playerID = e.playerID)f
-on a.playerID = f.playerID
-where yearID<2000
-and f.Games is not null 
-group by a.playerID
+  (select playerid,
+    count(distinct yearid) as b_years,
+    sum(ab) as b_atbat, 
+    sum(r) as b_runs, 
+    sum(h) as b_hits, 
+    sum(hr) as b_hruns, 
+    sum(sb) as b_stbas,
+    sum(so) as b_strik
+  from batting
+  group by playerid) b
+  on h.playerid = b.playerid
+left outer join
+  (select playerid,
+    count(distinct yearid) as p_years,
+    sum(w) as p_wins,
+    sum(l) as p_loss,
+    sum(sho) as p_shout,
+    sum(sv) as p_saves,
+    sum(er) as p_eruns,
+    sum(so) as p_stout
+  from pitching
+  group by playerid) p
+  on h.playerid = p.playerid
+left outer join
+  (select playerid,
+     count(distinct yearid) as f_years,
+     sum(po) as f_puts,
+     sum(a) as f_assis,
+     sum(dp) as f_dplay,
+     sum(pb) as f_pass,
+     max(case when pos = 'C' then 1 else 0 end) as catcher,
+     max(case when pos = 'P' then 1 else 0 end) as pitcher,
+     max(case when pos = 'DH' then 1 else 0 end) as dhitter
+  from fielding
+  group by playerid) f
+  on h.playerid = f.playerid
 ;'''
 # passing the connection and the SQL string to pandas.read_sql.
-test = pandas.read_sql(sql, conn)
+sql = pandas.read_sql(sql, conn)
 # closing the connection.
 conn.close()
 
 
 #checking what dataset looks like
 
-test.describe()
-#surprised that there are only 7 cases of pitchers being inducted into hall of fame
+sql.shape #total players=1157
+sql.inducted.value_counts()
+sql.pitcher.value_counts()
+sql.columns
 
 
-# dropping ALL NaNs in the dataset.
-test.dropna(inplace = True)
+#looking at descriptive statistics
 
-#Model
+bcol = ['b_atbat','b_runs','b_hits','b_hruns','b_stbas','b_strik']
+pcol = ['p_years','p_wins','p_loss','p_shout','p_saves','p_eruns','p_stout']
+fcol = ['f_years','f_puts','f_assis','f_dplay','f_pass']
+acol = ['b_atbat','b_runs','b_hits','b_hruns','b_stbas','b_strik',
+       'p_years','p_wins','p_loss','p_shout','p_saves','p_eruns','p_stout', 'f_years','f_puts','f_assis','f_dplay','f_pass']
+       
+       
+       
+sql[bcol].head()
+sql[bcol].tail()
+sql[bcol].describe()
 
-# seperate your response variable from your explanatory variables
-response_series = test.inducted 
-explanatory_variables = test[['Hits','HomeRuns', 'Field_Errors']]
+sql[pcol].head()
+sql[pcol].tail()
+sql[pcol].describe()
 
-# designating the number of observations we need to hold out.
-# notice that I'm rounding down so as to get a whole number. 
-holdout_num = round(len(test.index) * CROSS_VALIDATION_AMOUNT, 0)
-
-
-
-
-# creating our training and text indices
-test_indices = numpy.random.choice(test.index, holdout_num, replace = False )
-train_indices = test.index[~test.index.isin(test_indices)]
-
-# our training set
-response_train = response_series.ix[train_indices,]
-explanatory_train = explanatory_variables.ix[train_indices,]
-
-# our test set
-response_test = response_series.ix[test_indices,]
-explanatory_test = explanatory_variables.ix[test_indices,]
-
-# instantiating the KNN classifier, with p=2 for Euclidian distnace
-# see http://scikit-learn.org/stable/modules/generated/sklearn.neighbors.KNeighborsClassifier.html#sklearn.neighbors.KNeighborsClassifier for more information.
-KNN_classifier = KNeighborsClassifier(n_neighbors=3, p = 2)
-# fitting the data to the training set
-KNN_classifier.fit(explanatory_train, response_train) 
-
-# predicting the data on the test set. 
-predicted_response = KNN_classifier.predict(explanatory_test)
-
-# calculating accuracy
-number_correct = len(response_test[response_test == predicted_response])
-total_in_test_set = len(response_test)
-accuracy = number_correct / total_in_test_set
-print accuracy* 100
+sql[fcol].head()
+sql[fcol].tail()
+sql[fcol].describe()
 
 
 
-######
-## K-Fold CV
-#####
+#identify missings
+
+sql.isnull().sum()
+sql[sql.pitcher==1].isnull().sum()
+sql[sql.catcher==1].isnull().sum()
+sql[sql.dhitter==1].isnull().sum()
+sql[(sql.pitcher==0) & (sql.catcher==0) & (sql.dhitter==0)].isnull().sum()
+sql[(sql.pitcher!=1) & (sql.pitcher!=0)].isnull().sum() #27 players have no stats
+
+#drop 27 players where all B/P/F stats are missing
+sql.dropna(thresh=4, inplace=True) 
+
+#fill missing stats with zeros
+for a in acol:
+    sql[a].fillna(value=0, inplace=True)
 
 
 
-# let's use 10-fold cross-validation to score our model. 
-from sklearn.cross_validation import cross_val_score
-# we need to re-instantiate the model 
-KNN_classifier = KNeighborsClassifier(n_neighbors=3, p = 2)
-# notice that instead of putting in my train and text groups, I'm putting 
-# in the entire dataset -- the cross_val_score method automatically splits
-# the data. 
-scores = cross_val_score(KNN_classifier, explanatory_variables, response_series, cv=10, scoring='accuracy')
-# let's print out the accuracy at each itration of cross-validation.
-print scores
-# now, let's get the average accuracy score. 
-mean_accuracy = numpy.mean(scores) 
-print mean_accuracy * 100
-# look at hhow his differs from the previous two accuracies we computed. 
-print new_accuracy * 100
-print accuracy * 100
+#look at distributions of stats by induction status to identify potential model inputs
+for p in pcol:
+    sql[sql.pitcher==1].boxplot(column=p,by='inducted')  #try wins or ratio
+    
+for b in bcol:
+    sql[sql.dhitter==1].boxplot(column=b,by='inducted')  #try home runs, runs, hits
+    
+for a in acol:
+    sql[sql.catcher==1].boxplot(column=a,by='inducted')  #try puts, assists
+    
+for a in acol:
+    sql[(sql.pitcher==0) & (sql.catcher==0) & (sql.dhitter==0)].boxplot(column=a,by='inducted')  #try hits, runs, puts
+    
+#scatter plot matrix of potential model inputs
+pandas.scatter_matrix(sql[['b_hits','p_wins','f_puts', 'b_atbat', 'p_shout']])
+#at bats and hits are very highly correlated, likely get rid of at bats
 
-# now, let's tune the model for the optimal number of K. 
-k_range = range(1, 30, 2)
-scores = []
-for k in k_range:
-    knn = KNeighborsClassifier(n_neighbors=k,  p = 2)
-    scores.append(numpy.mean(cross_val_score(knn, explanatory_variables, response_series, cv=10, scoring='accuracy')))
 
-# plot the K values (x-axis) versus the 5-fold CV score (y-axis)
+#split data into before year 2000 and on/after year 2000
+sql_train = sql[sql.year < 2000]
+sql_test = sql[sql.year >= 2000]
+
+sql_train.shape
+sql_test.shape
+
+#select response variable in before 2000 set
+response_train = sql_train.inducted
+response_test = sql_test.inducted
+
+#FIRST MODEL FIT: CATEGORICAL POSITION VARIABLES
+
+#select explanatory variables
+explanatory_train1 = sql_train[['pitcher','catcher','dhitter']]
+explanatory_test1 = sql_test[['pitcher','catcher','dhitter']]
+
+#run KNN
+
+from sklearn.neighbors import KNeighborsClassifier as knc
+knn=knc(p = 2) #specify Euclidean distance
+k_range = range(1,30, 2) #specify range of k to test, every second number from 1 to 30, this is number of neighbors
+param_grid = dict(n_neighbors=k_range) #set up grid for results
+
+from sklearn.grid_search import GridSearchCV as gscv
+grid=gscv(knn, param_grid, cv=10, scoring='accuracy') #instantiate model
+grid.fit(explanatory_train1, response_train) #fit model
+
+grid_mean_scores_1 = [result[1] for result in grid.grid_scores_]
+best_score_1 = grid.best_score_
+best_param_1 = grid.best_params_
+knn_optimal_1 = grid.best_estimator_
+
+best_score_1
+best_param_1
+knn_optimal_1
+
+knn_optimal_pred_1 = knn_optimal_1.predict(explanatory_test1)
+accuracy_1 = len(response_test[response_test == knn_optimal_pred_1]) / len(response_test)
+
+accuracy_1
+#accuracy is 88% using just categorical variables for position
+
 import matplotlib.pyplot as plt
 plt.figure()
-plt.plot(k_range, scores)
-## so, the optimal value of K appears to be low -- under 5 or so. 
+plt.plot(k_range, grid_mean_scores_1)
+#appears as if at around a k of 5, our accuracy score is highest
 
-# automatic grid search for an optimal value of K
-from sklearn.grid_search import GridSearchCV
-knn = KNeighborsClassifier( p = 2)
-k_range = range(1, 30, 2)
-param_grid = dict(n_neighbors=k_range)
-grid = GridSearchCV(knn, param_grid, cv=10, scoring='accuracy')
-grid.fit(explanatory_variables, response_series)
+#SECOND MODEL FIT: CONTINUOUS STATS
 
-# check the results of the grid search and extract the optial estimator
-grid.grid_scores_
-grid_mean_scores = [result[1] for result in grid.grid_scores_]
-plt.figure()
-plt.plot(k_range, grid_mean_scores)
-best_oob_score = grid.best_score_
-grid.best_params_
-Knn_optimal = grid.best_estimator_
+#select explanatory variables
+explanatory_train2 = sql_train[['b_hits','p_wins','f_puts', 'b_atbat']]
+explanatory_test2 = sql_test[['b_hits','p_wins','f_puts', 'b_atbat']]
+
+#run KNN
+knn=knc(p = 2) #specify Euclidean distance
+k_range = range(1,30, 2) #specify range of k to test
+param_grid = dict(n_neighbors=k_range) #set up grid for results
+grid=gscv(knn, param_grid, cv=10, scoring='accuracy') #instantiate model
+grid.fit(explanatory_train2, response_train) #fit model
+
+grid_mean_scores_2 = [result[1] for result in grid.grid_scores_]
+best_score_2 = grid.best_score_
+best_param_2 = grid.best_params_
+knn_optimal_2 = grid.best_estimator_
+
+best_score_2
+best_param_2
+knn_optimal_2
+
+#future predictions
+knn_optimal_pred_2 = knn_optimal_2.predict(explanatory_test2)
+accuracy_2 = len(response_test[response_test == knn_optimal_pred_2]) / len(response_test)
+
+accuracy_2
+#predict hall of fame with 83% accuracy using just hits, wins, and puts
+#predict hall of fame with 87% accuracy using hits, wins, puts, at bats, and shouts
+
+#THIRD MODEL FIT: CATEGORICAL + CONTINUOUS STATS
+
+#select explanatory variables
+explanatory_train3 = sql_train[['pitcher','catcher','dhitter','b_hits','p_wins','f_puts', 'b_atbat']]
+explanatory_test3 = sql_test[['pitcher','catcher','dhitter','b_hits','p_wins','f_puts', 'b_atbat']]
+
+#run KNN and 
+knn=knc(p = 2) #specify Euclidean distance
+k_range = range(1,30, 2) #specify range of k to test
+param_grid = dict(n_neighbors=k_range) #set up grid for results
+grid=gscv(knn, param_grid, cv=10, scoring='accuracy') #instantiate model
+grid.fit(explanatory_train3, response_train) #fit model
+
+#check results
+grid_mean_scores_3 = [result[1] for result in grid.grid_scores_]
+best_score_3 = grid.best_score_
+best_param_3 = grid.best_params_
+knn_optimal_3 = grid.best_estimator_
+
+#future predictions
+knn_optimal_pred_3 = knn_optimal_3.predict(explanatory_test3)
+accuracy_3 = len(response_test[response_test == knn_optimal_pred_3]) / len(response_test)
+print accuracy_3*100  #87%
+
+#COMPARE
+print best_score_1
+print best_param_1
+print accuracy_1*100
+
+print best_score_2
+print best_param_2
+print accuracy_2*100
+
+print best_score_3
+print best_param_3
+print accuracy_3*100
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
