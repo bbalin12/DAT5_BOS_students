@@ -54,8 +54,8 @@ print bin_est.summary()
 
 df['binary_yhat']=bin_est.predict(df)
 
-# see how stolen bases fits the data
-plt = df.plot(x='yearID',y='total_runs',kind='scatter')
+# see how the binary years fits the data
+plt = df.plot(x='yearID',y='total_runs',kind='scatter', title = 'Binary Fit for Years')
 plt.plot(df.yearID,df.binary_yhat,color='blue',linewidth=3)
 # steps represent the ranges of years
 
@@ -68,13 +68,13 @@ print est.summary()
 df['yhat'] = est.predict(df)
 
 # plot how well the model fits the data
-plt = df.plot(x='yearID',  y='total_runs', kind = 'scatter')
+plt = df.plot(x='yearID',  y='total_runs', kind = 'scatter', title = 'First Model Fit')
 plt.plot(df.yearID, df.yhat, color='blue', linewidth=3)
 
 # look at residuals to see if there's heteroskedasticity
 df['residuals'] = df.total_runs - df.yhat
 
-plt = df.plot(x = 'total_runs', y='residuals', kind = 'scatter')
+plt = df.plot(x = 'total_runs', y='residuals', kind = 'scatter', title = 'First Model Residuals')
 
 # calculating RMSE, ** for exponent in python
 RMSE = (((df.residuals)**2).mean()**(1/2))
@@ -107,13 +107,15 @@ print est.rsquared
 df['large_yhat'] = large_est.predict(df)
 df['large_residuals'] = df.total_runs - df.large_yhat
 
+plt = df.plot(x='total_runs', y='large_residuals', kind='scatter', title = 'Second Model Residuals')
+
 RMSE_large = (((df.large_residuals)**2).mean()**(1/2))
 
 print 'average deviation for second equation: {0}'.format(round(RMSE_large,4))
 print 'average deviation for first equation: {0}'.format(round(RMSE,4))
 
 # is it more predictive?
-plt = df.plot(x='yearID', y='total_runs', kind='scatter')
+plt = df.plot(x='yearID', y='total_runs', kind='scatter', title = 'Comparison of First to Second Model')
 plt.plot(df.yearID, df.yhat, color='cyan', linewidth=3)
 plt.plot(df.yearID, df.large_yhat, color='yellow', linewidth=3)
 
@@ -164,6 +166,6 @@ print 'average new data deviation for first equation: {0}'.format(round(RMSE_hit
 # equation was OVERFIT using large equation
 
 # let's plot how bad the overfit was
-plt = df_after.plot(x='yearID',y='total_runs',kind='scatter')
+plt = df_after.plot(x='yearID',y='total_runs',kind='scatter', title = 'First Model vs Second Model Predictive Fit')
 plt.plot(df_after.yearID, df_after.yhat, color='blue', linewidth=3)
 plt.plot(df_after.yearID, df_after.large_yhat, color='orange', linewidth=3)
