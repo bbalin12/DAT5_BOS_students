@@ -59,68 +59,75 @@ df.corr('pearson')
 
 df.describe()
 
-plt.hist(df.yearID, bins=np.arange(1910, 2004), color='#cccccc')
-
-plt.hist(df.yearID, bins=np.arange(1950, 2004), color='#cccccc')
+plt = plt.hist(df.yearID, bins=np.arange(1950, 2004), color='#cccccc')
 # Will only use data from 1955 on because numbers are small prior to that
 
-plt.hist(df.games, bins=20)
-plt.xlabel('Games')
 
-plt = df.at_bats.hist(bins=50)
-plt.title('At Bats')
-
-plt = df.at_bats.hist(bins=10, range = [0,10])
-plt.title('At Bats')
-# large number with 10 or less at_bats.  will eliminate from dataset (although they shouldn't)
-# have an effect
-
-plt = df.at_bats.hist(bins=100)
-plt.title('At Bats')
-
-plt = df.runs.hist(bins=15, range = [0, 150])
+common_params = dict(bins=20, range=(0, 250), normed=True)
+plt.subplots_adjust(hspace=2)
+plt.subplot(611)
+plt.title('Games')
+plt.hist(df.games, **common_params)
+plt.subplot(612)
+plt.title('At bats')
+plt.hist(df.at_bats, **common_params)
+plt.subplot(613)
 plt.title('Runs')
-
-plt = df.hits.hist(bins=15, range = [0, 250])
+plt.hist(df.runs, **common_params)
+plt.subplot(614)
 plt.title('Hits')
-
-plt = df.doubles.hist(bins=15, range = [0, 60])
-plt.title('Doubles')
-
-plt = df.triples.hist(bins=10, range = [0, 20])
-plt.title('Triples')
-
-plt = df.home_runs.hist(bins=15, range = [0, 50])
-plt.title('Home Runs')
-
-plt = df.stolen_bases.hist(bins=15, range = [0, 60])
-plt.title('Solen Bases')
-
-plt = df.strike_outs.hist(bins=20, range = [0, 200])
+plt.hist(df.hits, **common_params)
+plt.subplot(615)
 plt.title('Strike Outs')
+plt.hist(df.strike_outs, **common_params)
+plt.subplot(616)
+plt.title('Walks')
+plt.hist(df.walks, **common_params)
+plt.show()
 
-plt = df.walks.hist(bins=20, range=[0, 140])
-plt.title("Walks")
+common_params = dict(bins=20, range=(0, 50), normed=True)
+plt.subplots_adjust(hspace=.01)
+plt.subplot(411)
+plt.title('Doubles')
+plt.hist(df.doubles, **common_params)
+plt.subplot(412)
+plt.title('Triples')
+plt.hist(df.triples, **common_params)
+plt.subplot(413)
+plt.title('Home Runs')
+plt.hist(df.home_runs, **common_params)
+plt.subplot(414)
+plt.title('Stolen Bases')
+plt.hist(df.stolen_bases, **common_params)
+plt.show()
 
-df.plot(kind = 'scatter', x = 'games', y = 'runs', alpha = 0.5)
 
-df.plot(kind = 'scatter', x = 'at_bats', y = 'runs', alpha = 0.5)
-
-df.plot(kind = 'scatter', x = 'singles', y = 'runs', alpha = 0.5)
-
-df.plot(kind = 'scatter', x = 'hits', y = 'runs', alpha = 0.5)
-
-df.plot(kind = 'scatter', x = 'doubles', y = 'runs', alpha = 0.5)
-
-df.plot(kind = 'scatter', x = 'triples', y = 'runs', alpha = 0.5)
-
-df.plot(kind = 'scatter', x = 'home_runs', y = 'runs', alpha = 0.5)
-
-df.plot(kind = 'scatter', x = 'stolen_bases', y = 'runs', alpha = 0.5)
-
-df.plot(kind = 'scatter', x = 'strike_outs', y = 'runs', alpha = 0.5)
-
-df.plot(kind = 'scatter', x = 'walks', y = 'runs', alpha = 0.5)
+f, ((ax1, ax2), (ax3, ax4), (ax5, ax6), (ax7, ax8), (ax9, ax10)) = plt.subplots(5, 2, sharex='col', sharey='row')
+ax1.scatter(df.games, df.runs)
+ax1.set_ylabel('Runs')
+ax1.set_title('Games')
+ax2.scatter(df.at_bats, df.runs)
+ax2.set_title('At bats')
+ax3.scatter(df.singles, df.runs)
+ax3.set_ylabel('Runs')
+ax3.set_title('Singles')
+ax4.scatter(df.hits, df.runs)
+ax4.set_title('Hits')
+ax5.scatter(df.doubles, df.runs)
+ax5.set_ylabel('Runs')
+ax5.set_title('Doubles')
+ax6.scatter(df.triples, df.runs)
+ax6.set_title('Triples')
+ax7.scatter(df.home_runs, df.runs)
+ax7.set_ylabel('Runs')
+ax7.set_title('Home Runs')
+ax8.scatter(df.stolen_bases, df.runs)
+ax8.set_title('Stolen Bases')
+ax9.scatter(df.strike_outs, df.runs)
+ax9.set_ylabel('Runs')
+ax9.set_title('Strike Outs')
+ax10.scatter(df.walks, df.runs)
+ax10.set_title('Walks')
 
 ##########################################################################
 
@@ -316,59 +323,6 @@ df.corr('pearson')
 
 df.describe()
 
-
-plt.hist(df.yearID, bins=np.arange(1957, 2004), color='#cccccc')
-
-
-plt.hist(df.games, bins=20)
-plt.xlabel('Games')
-
-plt = df.at_bats.hist(bins=50)
-plt.title('At Bats')
-
-plt = df.runs.hist(bins=15, range = [0, 150])
-plt.title('Runs')
-
-plt = df.hits.hist(bins=15, range = [0, 250])
-plt.title('Hits')
-
-plt = df.doubles.hist(bins=15, range = [0, 60])
-plt.title('Doubles')
-
-plt = df.triples.hist(bins=10, range = [0, 20])
-plt.title('Triples')
-
-plt = df.home_runs.hist(bins=15, range = [0, 50])
-plt.title('Home Runs')
-
-plt = df.stolen_bases.hist(bins=15, range = [0, 60])
-plt.title('Solen Bases')
-
-plt = df.strike_outs.hist(bins=20, range = [0, 200])
-plt.title('Strike Outs')
-
-plt = df.walks.hist(bins=20, range=[0, 140])
-plt.title("Walks")
-
-df.plot(kind = 'scatter', x = 'games', y = 'runs', alpha = 0.5)
-
-df.plot(kind = 'scatter', x = 'at_bats', y = 'runs', alpha = 0.5)
-
-df.plot(kind = 'scatter', x = 'singles', y = 'runs', alpha = 0.5)
-
-df.plot(kind = 'scatter', x = 'hits', y = 'runs', alpha = 0.5)
-
-df.plot(kind = 'scatter', x = 'doubles', y = 'runs', alpha = 0.5)
-
-df.plot(kind = 'scatter', x = 'triples', y = 'runs', alpha = 0.5)
-
-df.plot(kind = 'scatter', x = 'home_runs', y = 'runs', alpha = 0.5)
-
-df.plot(kind = 'scatter', x = 'stolen_bases', y = 'runs', alpha = 0.5)
-
-df.plot(kind = 'scatter', x = 'strike_outs', y = 'runs', alpha = 0.5)
-
-df.plot(kind = 'scatter', x = 'walks', y = 'runs', alpha = 0.5)
 
 import statsmodels.formula.api as smf
 from __future__ import division
