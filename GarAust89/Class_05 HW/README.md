@@ -20,7 +20,7 @@ on a.playerID = f.playerID
 where yearID<2000;
 ```
 
-However, when I dropepd the NA rows from the pandas data frame we were left with a very small number of datapoints. 
+However, when I dropped the NA rows from the pandas data frame we were left with a very small number of datapoints. 
 I believe this is because of the crossover between Batters and Pitchers. Therefore I decided to create individual models
 for pitchers and batters. 
 
