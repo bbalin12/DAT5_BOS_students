@@ -1,0 +1,96 @@
+Homework #8
+
+For the set of features that were extracted, I believe the K-Nearest Neighbors is the best choice. The cross validated score and Cohen's Kappa was highest for this method. The F1 score is slightly lower than it is with a Decision Tree, but I still believe overall that KNN is the best choice.
+
+
+Solutions
+Cross Validated Score using Naive Bayes is: 0.698406 
+Cross Validated Score using Decision Tree Accuracy: 0.819300
+Cross Validated Score using K Nearest Neighbors Accuracy: 0.828164
+Naive Bayes Cohen's Kappa is: -0.342390
+Decision Tree Cohen's Kappa is: 0.195706
+K Nearest Neighbors Cohen's Kappa is: 0.235162
+Naive Bayes F1 Score is: 0.414096
+Decision Tree F1 Score is: 0.573284
+K Nearest Neighbors F1 Score is: 0.528348
+
+
+Confusion Matrix for KNN, see attachments for ROC curve
+K Nearest Neighbor Confusion Matrix: 1
+Predicted Label   0   1  All
+True Label                  
+0                69   2   71
+1                11  10   21
+All              80  12   92
+
+
+K Nearest Neighbor Confusion Matrix: 2
+Predicted Label   0   1  All
+True Label                  
+0                68   3   71
+1                10  11   21
+All              78  14   92
+
+
+K Nearest Neighbor Confusion Matrix: 3
+Predicted Label   0  1  All
+True Label                 
+0                68  3   71
+1                17  4   21
+All              85  7   92
+
+
+K Nearest Neighbor Confusion Matrix: 4
+Predicted Label   0  1  All
+True Label                 
+0                69  2   71
+1                14  7   21
+All              83  9   92
+
+
+K Nearest Neighbor Confusion Matrix: 5
+Predicted Label   0   1  All
+True Label                  
+0                65   5   70
+1                11   9   20
+All              76  14   90
+
+
+K Nearest Neighbor Confusion Matrix: 6
+Predicted Label   0  1  All
+True Label                 
+0                68  2   70
+1                13  7   20
+All              81  9   90
+
+
+K Nearest Neighbor Confusion Matrix: 7
+Predicted Label   0   1  All
+True Label                  
+0                62   8   70
+1                 8  12   20
+All              70  20   90
+
+
+K Nearest Neighbor Confusion Matrix: 8
+Predicted Label   0   1  All
+True Label                  
+0                62   8   70
+1                10  10   20
+All              72  18   90
+
+
+K Nearest Neighbor Confusion Matrix: 9
+Predicted Label   0   1  All
+True Label                  
+0                65   5   70
+1                11   9   20
+All              76  14   90
+
+
+K Nearest Neighbor Confusion Matrix: 10
+Predicted Label   0   1  All
+True Label                  
+0                66   4   70
+1                 9  11   20
+All              75  15   90
