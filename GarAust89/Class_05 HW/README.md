@@ -159,4 +159,7 @@ plt.plot(k_range,scores_pitchers)
 #### Optimal K Results
 Below are two plots for the Batting and Pitching datasets. 
 
+![HW_05 - Optimal K-range for Batters Data](https://github.com/GarAust89/DAT5_BOS_students/blob/master/GarAust89/Class_05%20HW/HW_05%20-%20Optimal%20K-range%20for%20Batters%20Data.png)
+
+
 
