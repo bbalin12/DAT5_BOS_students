@@ -161,5 +161,72 @@ Below are two plots for the Batting and Pitching datasets.
 
 ![HW_05 - Optimal K-range for Batters Data](https://github.com/GarAust89/DAT5_BOS_students/blob/master/GarAust89/Class_05%20HW/HW_05%20-%20Optimal%20K-range%20for%20Batters%20Data.png)
 
+From the above plot we find that the optimal value of K for the Batting Dataset is 7
 
+![HW_05 - Optimal K-range for Pitchers Data](https://github.com/GarAust89/DAT5_BOS_students/blob/master/GarAust89/Class_05%20HW/HW_05%20-%20Optimal%20K-range%20for%20Pitchers%20Data.png) 
 
+The optimal value of K for the pitchers dataset is 9.
+
+##### Conducting a grid search to find the optimal value of K
+
+The following code segment was used to conduct a grid search for the optimal value of K: 
+```
+from sklearn.grid_search import GridSearchCV
+
+knn_batters = KNeighborsClassifier(p=2)
+k_range = range(1,70,2)
+param_grid_batters = dict(n_neighbors=k_range)
+grid_batters = GridSearchCV(knn_batters,param_grid_batters,cv=5,scoring='accuracy')
+grid_batters.fit(explanatory_vars_batters,response_series_batters)
+
+knn_pitchers = KNeighborsClassifier(p=2)
+k_range = range(1,70,2)
+param_grid_pitchers = dict(n_neighbors=k_range)
+grid_pitchers = GridSearchCV(knn_pitchers,param_grid_pitchers,cv=5,scoring='accuracy')
+grid_pitchers.fit(explanatory_vars_pitchers,response_series_pitchers)
+
+# Check the reults of the grid search and extract the optimal estimator 
+grid_batters.grid_scores_
+grid_mean_scores_batters = [results[1] for results in grid_batters.grid_scores_]
+plt.figure()
+plt.plot(k_range,grid_mean_scores_batters)
+best_oob_score_batters = grid_batters.best_score_
+grid_batters.best_params_
+KNN_optimal_batters = grid_batters.best_estimator_
+
+grid_pitchers.grid_scores_
+grid_mean_scores_pitchers= [results[1] for results in grid_pitchers.grid_scores_]
+plt.figure()
+plt.plot(k_range,grid_mean_scores_pitchers)
+best_oob_score_pitchers = grid_pitchers.best_score_
+grid_pitchers.best_params_
+KNN_optimal_pitchers = grid_pitchers.best_estimator_
+```
+
+This code segment produced two plots (below) which show that the optimal values of K for our
+Batting and Pitching Datasets are 7 and 9 respectively. 
+
+![HW_05 - K-range 1-70 Batters](https://github.com/GarAust89/DAT5_BOS_students/blob/master/GarAust89/Class_05%20HW/HW_05%20-%20K-range%201-70%20Batters.png)
+
+![HW_05 - K-range 1-70 Pitchers](https://github.com/GarAust89/DAT5_BOS_students/blob/master/GarAust89/Class_05%20HW/HW_05%20-%20K-range%201-70%20Pitchers.png)
+
+## Perform Out of Sample testing using Data from 2000 onwards
+
+```
+response_series_batters2 = df_batters.inducted
+explanatory_vars_batters2 = df_batters2[['Games','Hits','At_Bats','Homers','Double_Plays','Fielder_Assists','Field_Errors']]
+
+optimal_knn_preds_batters = KNN_optimal_batters.predict(explanatory_vars_batters2)
+
+number_correct_batters = len(response_series_batters2[response_series_batters2==optimal_knn_preds_batters])
+total_in_test_set_batters = len(response_series_batters2)
+accuracy_batters = number_correct_batters/total_in_test_set_batters
+
+# compare actual with the accuracy anticipated by our grid search
+print accuracy_batters*100
+print best_oob_score_batters*100
+```
+
+Strangely in this case our model has outperformed the in sample data when using data from 2000 onwards. 
+After repeating the above code for the pitching data set. We find that that the pitching model also 
+out performs the historical in-sample data.
