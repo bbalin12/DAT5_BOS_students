@@ -81,7 +81,7 @@ df.plot(x='runs', y='simple_residuals', kind='scatter')
 df.plot(x='runs', y='complex_residuals', kind='scatter')
 
 # for simple, variance increases sharply with hits, so heteroskedastic.
-# for complex, less so.
+# for complex, less so. Unable to make entirely homoskedastic.
 
 print simple_est.rsquared
 # 0.940
