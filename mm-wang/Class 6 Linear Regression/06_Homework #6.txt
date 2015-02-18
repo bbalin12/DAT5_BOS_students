@@ -1,0 +1,28 @@
+Homework #6
+
+For this homework, I tested multiple different models.
+
+The first model I tested was: 
+total_runs ~ doubles + caught + s1940_e1962 + s1962_e1980
+
+which looked at doubles, how many times a player was caught on base, and the time periods between 1940-1960, 1962-1980, and afterward
+
+The second model I tested was:
+total_runs ~ triples + pow(triples, 2) + base_balls + s1940_e1962 + s1962_e1980
+
+which looked at the triples, how many times players got to the base on a ball, and the same time period
+
+I also tested doubles + base_balls + walks, triples + base_balls + walks, triples^2 + strikes^2 + base_balls,
+and different years of 1940-1960 and 1960-1980, 1950-1965 and 1965-1980
+
+First Model
+R-squared of 1st Model: 0.922135702099
+RMSE/Average deviation for first model: 1093.7028
+RMSE/Average new data deviation for first model: 3451.2817
+
+Second Model
+R-squared of 2nd Model: 0.973588836611
+RMSE/Average deviation for second model: 636.9772
+RMSE/Average new data deviation for second model: 564.4559
+
+I chose the second model because the R-squared value (fit to the data) is better and the RMSE is much smaller for both the training and the test data.
