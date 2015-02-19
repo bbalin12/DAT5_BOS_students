@@ -180,6 +180,7 @@ All              782  166  948
 ```
 
 Overall Accuracy : (146+684)/(98+20+146+684) = 88%
+
 Sesnsitivity: (146)/(146+98) = 59%
 
 Using the following code we predict accuracy: 
