@@ -62,6 +62,8 @@ print mean_roc_score_bayse
 #Cross Validation
 from sklearn.cross_validation import train_test_split
 xTrain, xTest, yTrain, yTest = train_test_split(explanatory_df, response_series, test_size =  0.2)
+## All training data
+xxTrain, xxTest, yyTrain, yyTest = train_test_split(explanatory_df, response_series, test_size =  0)
 y_predicted = naive_bayes_classifier.fit(xTrain, yTrain).predict(xTest)
 
 #Confusion Matrix
@@ -153,5 +155,45 @@ plt.ylabel('True Positive Rate (Sensitivity)')
 
 print 'KNN classification is the best!!'
 
+
+##################
+# Classification and ROC analysis
+
+# Run classifier with cross-validation and plot ROC curves
+
+from sklearn.metrics import roc_curve, auc
+from scipy import interp
+from sklearn.cross_validation import StratifiedKFold
+
+cv = StratifiedKFold(response_series, n_folds=10)
+KNN_classifier = KNeighborsClassifier(n_neighbors=37, p = 2)
+
+mean_tpr = 0.0
+mean_fpr = numpy.linspace(0, 1, 100)
+all_tpr = []
+
+for i, (train, test) in enumerate(cv):
+    probas_ = KNN_classifier.fit(xxTrain[train], yyTrain[train]).predict_proba(xxTrain[test])
+    # Compute ROC curve and area the curve
+    fpr, tpr, thresholds = roc_curve(yyTrain[test], probas_[:, 1])
+    mean_tpr += interp(mean_fpr, fpr, tpr)
+    mean_tpr[0] = 0.0
+    roc_auc = auc(fpr, tpr)
+    plt.plot(fpr, tpr, lw=1, label='ROC fold %d (area = %0.2f)' % (i, roc_auc))
+
+plt.plot([0, 1], [0, 1], '--', color=(0.6, 0.6, 0.6), label='Luck')
+
+mean_tpr /= len(cv)
+mean_tpr[-1] = 1.0
+mean_auc = auc(mean_fpr, mean_tpr)
+plt.plot(mean_fpr, mean_tpr, 'k--', label='Mean ROC (area = %0.2f)' % mean_auc, lw=2)
+
+plt.xlim([-0.05, 1.05])
+plt.ylim([-0.05, 1.05])
+plt.xlabel('False Positive Rate')
+plt.ylabel('True Positive Rate')
+plt.title('Receiver operating characteristic example')
+plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
+plt.show()
 
 
