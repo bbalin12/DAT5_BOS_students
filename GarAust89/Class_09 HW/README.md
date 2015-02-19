@@ -116,3 +116,57 @@ This can be seen in the Heat Map chart below:
 
 We can see from this heat map that the variables selected from the batting table are highly correlated as are the variables selected from the pitching table. There is little or no correlation between batting and pitching statistics which is unsurprising.
 
+#### Recursive Feature Elimination and Cross-Validation (RFECV)
+
+Next we used RFECV to determine the optimal number of features to be used. This was achieved using the 
+following code: 
+```
+class TreeClassifierWithCoef(tree.DecisionTreeClassifier):
+   def fit(self, *args, **kwargs):
+       super(tree.DecisionTreeClassifier, self).fit(*args, **kwargs)
+       self.coef_ = self.feature_importances_
+       
+# create your tree based estimator
+decision_tree = TreeClassifierWithCoef(criterion = 'gini', splitter = 'best',
+max_features=None, max_depth = None, min_samples_split = 2, min_samples_leaf = 2,
+max_leaf_nodes = None, random_state = 1)
+
+## set up the estimator. Score by AUC
+rfe_cv = RFECV(estimator = decision_tree, step = 1, cv = 10, scoring = 'roc_auc',verbose = 1)
+rfe_cv.fit(explanatory_df, response_series)
+
+print "Optimal number of features: {0} of {1} considered".format(rfe_cv.n_features_,
+len(explanatory_df.columns))
+
+print rfe_cv.grid_scores_
+```
+
+The below plot clearly illustrates the optimal number of features. 
+
+![DecisionTreeOptimalFeatureSelection](https://github.com/GarAust89/DAT5_BOS_students/blob/master/GarAust89/Class_09%20HW/DecisionTreeOptimalFeatureSelection.png)
+
+#### Combining RFECV with GridSearchCV 
+
+We combine RFECV with GridSearchCV to fine tune our model and obtain the optimal parameters. For this
+process we used a decision tree depth range of 2-10.
+
+```
+from sklearn.grid_search import GridSearchCV
+
+depth_range = range(2,10)
+# notice that in paramgrid need prefix estimator
+param_grid = dict(estimator__max_depth=depth_range)
+# notice that this will take quite a bit longer to compute
+rfe_grid_search = GridSearchCV(rfe_cv, param_grid, cv = 10, scoring = 'roc_auc')
+rfe_grid_search.fit(explanatory_df, response_series)
+
+print rfe_grid_search.grid_scores_
+rfe_grid_search.best_params_
+```
+
+This leads to the following plot: 
+
+![GridSearchOptimalFeatureSelection](https://github.com/GarAust89/DAT5_BOS_students/blob/master/GarAust89/Class_09%20HW/GridSearchOptimalFeatureSelection.png)
+
+In this case the optimal decision tree depth is 4. We extract the optimal parameters and test the models
+accuracy using cross-validation and create a confusion matrix.
