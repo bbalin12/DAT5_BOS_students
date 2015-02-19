@@ -24,6 +24,9 @@ from sklearn.preprocessing import Imputer
 from sklearn.grid_search import GridSearchCV
 from sklearn.feature_selection import RFECV
 
+# division
+from __future__ import division
+
 
 ############################
 # Helper methods & classes #
@@ -176,6 +179,16 @@ string_features = string_features.fillna('Nothing')
 
 # use 0.5% to keep at least a few schools as separate bins
 string_features = bin_categorical(string_features,cutoffPercent=0.005)
+
+string_features.columns[0]
+string_features.schoolID.unique()
+
+# grab categories for use with the out-of-sample data
+orig_categories = 	{}
+for col in string_features.columns:
+	orig_categories[col] = string_features[col].unique()
+
+
 print string_features.schoolID.value_counts(normalize = True)
 '''
 Nothing      0.748337
@@ -198,7 +211,7 @@ Index([u'teamID_ATL', u'teamID_BAL', u'teamID_BOS', u'teamID_BRO', u'teamID_BSN'
 
 explanatory_df = pd.concat([numeric_features, encoded_string_features], axis=1)
 
-explanatory_df.columns
+print explanatory_df.columns
 '''
 Index([u'totalCareerHits', u'careerBattingAvg', u'avgCareerERA', u'careerFieldingPercentage', u'teamID_ATL', u'teamID_BAL', u'teamID_BOS', u'teamID_BRO', u'teamID_BSN', u'teamID_CAL', u'teamID_CHA', u'teamID_CHN', u'teamID_CIN', u'teamID_CLE', u'teamID_DET', u'teamID_HOU', u'teamID_KCA', u'teamID_LAN', u'teamID_MIN', u'teamID_ML1', u'teamID_ML4', u'teamID_MON', u'teamID_NY1', u'teamID_NYA', u'teamID_NYN', u'teamID_OAK', u'teamID_Other', u'teamID_PHA', u'teamID_PHI', u'teamID_PIT', u'teamID_SDN', u'teamID_SFN', u'teamID_SLA', u'teamID_SLN', u'teamID_TEX', u'teamID_WS1', u'schoolID_Nothing', u'schoolID_Other', u'schoolID_arizonast', u'schoolID_stmarysca', u'schoolID_usc'], dtype='object')
 '''
@@ -259,12 +272,10 @@ print rfecv_grid_search.best_params_
 
 best_dt_model = rfecv_grid_search.best_estimator_
 
-# let's plot out the resul
 used_features = explanatory_df.columns[best_dt_model.get_support()]
 print used_features
 # Index([u'totalCareerHits', u'careerBattingAvg', u'avgCareerERA'], dtype='object')
 
-best_dt_model = rfecv_grid_search.best_estimator_
 
 
 # 12 RECLEAN, SCALE AND AND ENCODE INCOMING UNLABELED DATA
@@ -323,5 +334,72 @@ post_2000_explanatory_df.drop(post_2000_explanatory_df.index[~post_2000_explanat
 len(post_2000_response_series) == len(post_2000_explanatory_df)
 # True
 
-# TODO: THE REST
+# split
+post_2000_string_features = post_2000_explanatory_df.ix[:, post_2000_explanatory_df.dtypes == 'object']
+post_2000_numeric_features = post_2000_explanatory_df.ix[:, post_2000_explanatory_df.dtypes != 'object']
+
+# impute numeric from original imputer
+post_2000_numeric_features = pd.DataFrame(imputer.transform(post_2000_numeric_features), columns=post_2000_numeric_features.columns, index=post_2000_numeric_features.index)
+
+
+# bin and encode
+post_2000_string_features = post_2000_string_features.fillna('Nothing')
+
+# for each string feature, if there is a value that is not in the original dataset, make it 'other'.
+for col in post_2000_string_features:
+	post_2000_string_features[col].ix[~post_2000_string_features[col].isin(orig_categories[col])] = "Other"
+
+post_2000_encoded_string_features  =  get_binary_values(post_2000_string_features)
+
+# post-encoding, add any dummy features that were in the original
+for col in encoded_string_features:
+	if col not in post_2000_encoded_string_features:
+		post_2000_encoded_string_features[col] = 0
+
+
+# reorder columns to match original
+
+post_2000_encoded_string_features = post_2000_encoded_string_features[encoded_string_features.columns]
+
+
+# combine
+post_2000_explanatory_df = pd.concat([post_2000_numeric_features, post_2000_encoded_string_features], axis=1)
+
+
+# scale
+post_2000_explanatory_df = pd.DataFrame(scaler.transform(post_2000_explanatory_df),columns=post_2000_explanatory_df.columns,index=post_2000_explanatory_df.index)
+
+
+# we only want the features our model picked out as most important
+# used_by_model_post_2000_explanatory_df = post_2000_explanatory_df[used_features]
+#print used_by_model_post_2000_explanatory_df.columns
+#Index([u'totalCareerHits', u'careerBattingAvg', u'avgCareerERA'], dtype='object')
+
+# NM, the model already includes the mask
+
+# 13.  Input your new data into the model
+
+# predicted_post_2000_inductions = best_dt_model.predict(used_by_model_post_2000_explanatory_df)
+
+predicted_post_2000_inductions = best_dt_model.predict(post_2000_explanatory_df)
+
+
+number_correct = len(post_2000_response_series[post_2000_response_series == predicted_post_2000_inductions])
+total_in_test_set = len(post_2000_response_series)
+accuracy = number_correct / total_in_test_set
+
+print accuracy
+# 0.79
+
+cm = pd.crosstab(post_2000_response_series, predicted_post_2000_inductions, rownames=['True Label'], colnames=['Predicted Label'], margins=True)
+
+print cm
+'''
+Predicted Label    0   1  All
+True Label
+0                181  37  218
+1                 13  17   30
+All              194  54  248
+'''
+
 
