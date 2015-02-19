@@ -109,4 +109,10 @@ def find_perfect_corr(df):
 
 Next we cleaned and manipulated the data using the functions listed above. We found that no variables were perfectly correlated and there were no variables with zero variance. 
 
+However, some of the features show quite high correlation amongst the explanatory variables. 
+This can be seen in the Heat Map chart below:
+
+![CorrelationHeatMap](https://github.com/GarAust89/DAT5_BOS_students/blob/master/GarAust89/Class_09%20HW/CorrelationHeatMap.png)
+
+We can see from this heat map that the variables selected from the batting table are highly correlated as are the variables selected from the pitching table. There is little or no correlation between batting and pitching statistics which is unsurprising.
 
