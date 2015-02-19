@@ -170,3 +170,37 @@ This leads to the following plot:
 
 In this case the optimal decision tree depth is 4. We extract the optimal parameters and test the models
 accuracy using cross-validation and create a confusion matrix.
+
+```
+Predicted Label    0    1  All
+True Label                    
+0                684   20  704
+1                 98  146  244
+All              782  166  948
+```
+
+Overall Accuracy : (146+684)/(98+20+146+684) = 88%
+Sesnsitivity: (146)/(146+98) = 59%
+
+Using the following code we predict accuracy: 
+```
+accuracy_scores_best_oldData = cross_val_score(best_decision_tree_rfe_grid,
+explanatory_df, response_series, cv=10, scoring='roc_auc')
+
+print accuracy_scores_best_oldData.mean()
+```
+
+The model has an accuracy rating of 81% which is rated as a good score under the following guidelines:
+``` 
+# .90 -1= excellent
+# .8 - .9 = good
+# .7 - .8 = fair
+# .6 - .7 = poor 
+# .5 - .6 = fail
+```
+
+However the poor sensitivity result is a cause of concern as we are trying to predict whether a player will
+be inducted into the hall of fame or not. 
+
+## Out-Of-Sample Testing
+
