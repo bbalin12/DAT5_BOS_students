@@ -205,3 +205,73 @@ be inducted into the hall of fame or not.
 
 ## Out-Of-Sample Testing
 
+First step was to create a new Hall of Fame inductees table for players inducted after the year 2000.
+
+```
+conn = sqlite3.connect('C:\Users\garauste\Documents\SQLite\lahman2013.sqlite')
+cur = conn.cursor()
+
+## writing a query to simply creating our repsonse feature. 
+# notice I ahve to aggregate at the player level as players can be entered into voting
+# for numerous years in a row
+table_creation_query = """
+CREATE TABLE hall_of_fame_inductees_post2000 as  
+
+select playerID, case when average_inducted = 0 then 0 else 1 end as inducted from (
+
+select playerID, avg(case when inducted = 'Y' then 1 else 0 end ) as average_inducted from  HallOfFame hf
+where yearid > 2000
+group by playerID
+
+) bb; """
+
+# executing the query
+cur.execute(table_creation_query)
+# closing the cursor
+cur.close()
+```
+
+Then use the same large query from earlier to repull the data post 2000. 
+
+Repeat a similar data cleaning and manipulation process to the earlier data with a few caveats. 
+
+1. The first issue to deal with was that some rows in the explanatory dataset had all NaNs and were 
+    therefore dropped from the dataset. Therefore the same indices had to be dropped from the response series.
+    However after doing this we had to reset the indices to prevent NaN's from being introduced when we 
+    concatenated the dataset.
+
+2. The second issue was that some of the states in the pre-2000 dataset were not present in the post 2000 dataset. 
+    We created a list of unique states for both datasets and then created a dummy for the missing states. 
+
+```
+## Prior to binning need to check to see if unique features are included
+## here that are not in pre-2000 data
+unique_states = list(set(e for e in string_features.birthState))
+unique_states_post2000 = list(set(e for e in string_features_post2000.birthState))
+extra_states = list(set(e for e in unique_states_post2000 if e not in unique_states))
+
+# Check to see if there are any columns missing from the new data set that are in the old data
+missing_columns=[e for e in explanatory_df.columns if e not in new_df_post_2000.columns]
+other_columns = [e for e in new_df_post_2000.columns if e not in explanatory_df.columns]
+
+# Create dummies for missing columns 
+for e in missing_columns:
+    new_df_post_2000[e] = 0
+```
+
+Once we create results we inspect the confusion matrix:
+
+```
+Predicted Label    0   1  All
+True Label                   
+0                178  27  205
+1                 41  15   56
+All              219  42  261
+```
+
+Accuracy = (15+178)/261 = 74%
+Sensitivity = 15/56 = 27%
+
+So well the overall accuracy of our model is reasonable. The models sensivity is very poor. Therefore we can 
+conclude that our model is not a very good model as it is unable to accuratly predict whether a player is inducted
+into the hall of fame or not
