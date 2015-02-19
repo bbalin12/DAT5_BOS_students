@@ -105,3 +105,8 @@ def find_perfect_corr(df):
     return {'corrGroupings':result, 'toRemove':toRemove}
 ```
 
+#### Cleaning and Manipulating the Data
+
+Next we cleaned and manipulated the data using the functions listed above. We found that no variables were perfectly correlated and there were no variables with zero variance. 
+
+
