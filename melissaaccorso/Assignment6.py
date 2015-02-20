@@ -103,7 +103,7 @@ df3.dropna(inplace = True)
 
 #creating Red Sox dummy variable
 df3['BOS'] = 0
-df3.BOS[df.teamID == 'BOS'] = 1
+df3.BOS[df3.teamID == 'BOS'] = 1
 df3['BOS']
 
 #explanatory features:homeruns, stolen bases, year, and being on the Boston Red Sox
@@ -114,7 +114,7 @@ print bin_est3.summary()
 print bin_est3.rsquared
 
 # let's create a y-hat column in our dataframe. 
-df3['yhat3'] = bin_est3.predict(df)
+df3['yhat3'] = bin_est3.predict(df3)
 # now, let's plot how well the model fits the data. 
 plt = df3.plot(x='homeruns', y='total_runs', kind='scatter')
 plt.plot(df3.homeruns, df3.yhat3, color='blue', linewidth=3)
@@ -128,7 +128,7 @@ RMSE3 = (((df3.residuals3) ** 2).mean() ** (1/2))
 RMSE3
 #on average, the model is off about 565 runs for each observation
 # lets understand the percent by which the model deviates from actuals on average
-percent_avg_dev3 = RMSE3 / df.total_runs.mean()
+percent_avg_dev3 = RMSE3 / df3.total_runs.mean()
 print 'average deviation: {0}%'.format(round(percent_avg_dev3*100, 1))
 # looks like in-sample deviation is 3.4% on average. 
 
@@ -138,7 +138,7 @@ est4 = smf.ols(formula='total_runs ~ homeruns + stolen_bases', data=df3).fit()
 # now, let's print out the results.
 print est4.summary()
 #Creating a yhat column
-df3['yhat4'] = est4.predict(df)
+df3['yhat4'] = est4.predict(df3)
 #Checking heteroskedasticity 
 df3['residuals4'] = df3.total_runs - df3.yhat4
 plt = df3.plot(x='total_runs', y='residuals4', kind='scatter')
