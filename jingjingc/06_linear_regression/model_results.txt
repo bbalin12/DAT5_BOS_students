@@ -1,0 +1,145 @@
+Model 0: At Bats + Hits
+
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:                   runs   R-squared:                       0.939
+Model:                            OLS   Adj. R-squared:                  0.939
+Method:                 Least Squares   F-statistic:                 4.891e+05
+Date:                Sun, 22 Feb 2015   Prob (F-statistic):               0.00
+Time:                        18:20:41   Log-Likelihood:            -2.1556e+05
+No. Observations:               63419   AIC:                         4.311e+05
+Df Residuals:                   63416   BIC:                         4.312e+05
+Df Model:                           2                                         
+Covariance Type:            nonrobust                                         
+==============================================================================
+                 coef    std err          t      P>|t|      [95.0% Conf. Int.]
+------------------------------------------------------------------------------
+Intercept     -0.3303      0.039     -8.386      0.000        -0.407    -0.253
+at_bats       -0.0206      0.001    -21.521      0.000        -0.022    -0.019
+hits           0.5815      0.003    174.552      0.000         0.575     0.588
+==============================================================================
+Omnibus:                    15275.571   Durbin-Watson:                   1.071
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):           183758.627
+Skew:                           0.819   Prob(JB):                         0.00
+Kurtosis:                      11.177   Cond. No.                         361.
+==============================================================================
+
+average % deviation model 0: 19.2%
+
+----
+
+Model 1: At Bats + Hits + Doubles + Triples + Homeruns
+
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:                   runs   R-squared:                       0.953
+Model:                            OLS   Adj. R-squared:                  0.953
+Method:                 Least Squares   F-statistic:                 2.544e+05
+Date:                Sun, 22 Feb 2015   Prob (F-statistic):               0.00
+Time:                        18:51:21   Log-Likelihood:            -2.0768e+05
+No. Observations:               63419   AIC:                         4.154e+05
+Df Residuals:                   63413   BIC:                         4.154e+05
+Df Model:                           5                                         
+Covariance Type:            nonrobust                                         
+==============================================================================
+                 coef    std err          t      P>|t|      [95.0% Conf. Int.]
+------------------------------------------------------------------------------
+Intercept     -0.0774      0.035     -2.222      0.026        -0.146    -0.009
+at_bats       -0.0096      0.001    -11.182      0.000        -0.011    -0.008
+hits           0.4166      0.004    113.960      0.000         0.409     0.424
+doubles        0.1607      0.008     19.662      0.000         0.145     0.177
+triples        1.0339      0.016     66.412      0.000         1.003     1.064
+homeruns       0.7004      0.006    126.111      0.000         0.689     0.711
+==============================================================================
+Omnibus:                    17876.729   Durbin-Watson:                   1.159
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):           216982.588
+Skew:                           1.012   Prob(JB):                         0.00
+Kurtosis:                      11.833   Cond. No.                         362.
+==============================================================================
+
+average % deviation model 1: 16.9%
+
+----
+
+Model 2: hits + triples + homeruns + stolen bases + rbi + strikeouts
+
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:                   runs   R-squared:                       0.959
+Model:                            OLS   Adj. R-squared:                  0.959
+Method:                 Least Squares   F-statistic:                 2.477e+05
+Date:                Mon, 23 Feb 2015   Prob (F-statistic):               0.00
+Time:                        21:19:32   Log-Likelihood:            -2.0296e+05
+No. Observations:               63419   AIC:                         4.059e+05
+Df Residuals:                   63412   BIC:                         4.060e+05
+Df Model:                           6                                         
+Covariance Type:            nonrobust                                         
+================================================================================
+                   coef    std err          t      P>|t|      [95.0% Conf. Int.]
+--------------------------------------------------------------------------------
+Intercept        0.1474      0.032      4.582      0.000         0.084     0.210
+hits             0.4035      0.002    250.636      0.000         0.400     0.407
+triples          0.7764      0.015     52.419      0.000         0.747     0.805
+homeruns         0.9635      0.009    110.934      0.000         0.947     0.981
+stolen_bases     0.4317      0.004     97.854      0.000         0.423     0.440
+rbi             -0.0591      0.004    -15.720      0.000        -0.066    -0.052
+strikeouts      -0.0311      0.002    -19.398      0.000        -0.034    -0.028
+==============================================================================
+Omnibus:                    16729.362   Durbin-Watson:                   1.255
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):           213674.611
+Skew:                           0.911   Prob(JB):                         0.00
+Kurtosis:                      11.806   Cond. No.                         116.
+==============================================================================
+
+average % deviation model 2: 15.8%
+
+----
+
+Model 3 (model 2 + categorical year variables): 
+
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:                   runs   R-squared:                       0.960
+Model:                            OLS   Adj. R-squared:                  0.960
+Method:                 Least Squares   F-statistic:                 1.272e+05
+Date:                Mon, 23 Feb 2015   Prob (F-statistic):               0.00
+Time:                        21:21:12   Log-Likelihood:            -2.0214e+05
+No. Observations:               63419   AIC:                         4.043e+05
+Df Residuals:                   63406   BIC:                         4.044e+05
+Df Model:                          12                                         
+Covariance Type:            nonrobust                                         
+===================================================================================
+                      coef    std err          t      P>|t|      [95.0% Conf. Int.]
+-----------------------------------------------------------------------------------
+Intercept           0.5937      0.065      9.202      0.000         0.467     0.720
+hits                0.4067      0.002    253.453      0.000         0.404     0.410
+triples             0.7423      0.015     49.965      0.000         0.713     0.771
+homeruns            0.9837      0.009    113.271      0.000         0.967     1.001
+stolen_bases        0.4377      0.004     98.349      0.000         0.429     0.446
+rbi                -0.0773      0.004    -20.503      0.000        -0.085    -0.070
+strikeouts         -0.0209      0.002    -12.885      0.000        -0.024    -0.018
+pre_1900            4.9680      0.259     19.191      0.000         4.461     5.475
+years_1901_1919    -1.7043      0.106    -16.025      0.000        -1.913    -1.496
+years_1920_1941     0.8092      0.086      9.424      0.000         0.641     0.977
+years_1942_1965    -0.3428      0.079     -4.365      0.000        -0.497    -0.189
+years_1966_1975    -1.4119      0.090    -15.715      0.000        -1.588    -1.236
+years_1976_1995    -1.2466      0.076    -16.435      0.000        -1.395    -1.098
+==============================================================================
+Omnibus:                    16107.431   Durbin-Watson:                   1.285
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):           195378.529
+Skew:                           0.879   Prob(JB):                         0.00
+Kurtosis:                      11.417   Cond. No.                         957.
+==============================================================================
+
+average % deviation model 2: 16.4%
+
+----
+
+Model 2 and years model on post-2005 data:
+
+average deviation for model 2: 2.5341
+average % deviation for model 2: 11.9%
+average deviation for model 2 + years: 2.7212
+average % deviation for model 2 + years: 12.8%
+
+
