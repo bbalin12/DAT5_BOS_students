@@ -109,7 +109,7 @@ number_correct = len(batting_response_test[batting_response_test == batting_pred
 total_in_test_set = len(batting_response_test)
 accuracy = number_correct / total_in_test_set
 print accuracy*100 
-# not a stellar accuracy: 80%
+# not a stellar accuracy: 81.5%
 
 # repeat for pitching
 pitching_holdout_num = round(len(df_pitching.index) * CROSS_VALIDATION_AMOUNT, 0)
@@ -130,7 +130,7 @@ number_correct = len(pitching_response_test[pitching_response_test == pitching_p
 total_in_test_set = len(pitching_response_test)
 accuracy = number_correct / total_in_test_set
 print accuracy*100
-# a bit better at 87%
+# roughly the same, at 79%
 
 ###########################
 # K-fold CV
@@ -173,7 +173,8 @@ plt.figure()
 plt.plot(batting_k_range, batting_grid_mean_scores)
 
 batting_best_oob_score = batting_grid.best_score_
-batting_grid.best_params_ # best k-value at 27 - that's pretty high. might be overfitting here
+print batting_grid.best_params_ # best k-value at 27 - that's pretty high. might be overfitting here
+print batting_best_oob_score
 batting_knn_opt = batting_grid.best_estimator_
 
 # repeat for pitching
@@ -190,7 +191,8 @@ plt.figure()
 plt.plot(pitching_k_range, pitching_grid_mean_scores)
 
 pitching_best_oob_score = pitching_grid.best_score_
-pitching_grid.best_params_ # best k-value at 23
+print pitching_grid.best_params_ # best k-value at 23
+print pitching_best_oob_score
 pitching_knn_opt = pitching_grid.best_estimator_
 
 

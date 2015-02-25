@@ -1,0 +1,31 @@
+Part 1: KNN Classifier
+n-neighbors = 3
+distance = Euclidean
+
+batting classifier accuracy: 81%
+pitching classifier accuracy: 79%
+
+----
+
+Part 2: K-fold CV
+k=10
+
+mean batting cv score: 78%
+mean pitching cv score: 74%
+
+----
+
+Part 3: Grid search for optimal k
+range: 1-60
+
+batting: n=27
+batting accuracy: 81%
+pitching: n=23
+pitching accuracy: 80%
+
+----
+
+Part 4: Test model on holdout sample
+
+batting OOS accuracy: 89%
+pitching OOS accuracy: 93%
