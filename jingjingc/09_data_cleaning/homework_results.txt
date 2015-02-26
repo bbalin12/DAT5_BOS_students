@@ -1,0 +1,47 @@
+Class #9 Homework Results
+
+RFECV grid scores:
+
+[ 0.67248759  0.73128773  0.75044567  0.75335127  0.76677649  0.76534541
+  0.76680751  0.76046764  0.75451878  0.75326693  0.75968092  0.75200822
+  0.76461301  0.77161083  0.75719785  0.76792807  0.77363799  0.75785496
+  0.772556    0.76692186  0.75224346  0.76791264  0.75796965  0.76186385
+  0.76753773  0.75938431  0.76234943  0.7600275   0.7581442   0.75584071
+  0.75780114  0.77307025  0.76241751  0.76174396  0.76469601  0.76117606
+  0.75940543  0.75852163  0.7671447   0.76258937  0.76622116  0.76369852
+  0.7600617   0.76060563  0.75718293  0.76787508  0.7564616   0.76498005]
+
+ ----
+
+Estimator grid scores for max depth:
+
+[mean: 0.65566, std: 0.04739, params: {'estimator__max_depth': 1}, mean: 0.75779, std: 0.05844, params: {'estimator__max_depth': 2}, mean: 0.78546, std: 0.05165, params: {'estimator__max_depth': 3}, mean: 0.80901, std: 0.04985, params: {'estimator__max_depth': 4}, mean: 0.81122, std: 0.04749, params: {'estimator__max_depth': 5}, mean: 0.80313, std: 0.05073, params: {'estimator__max_depth': 6}, mean: 0.79129, std: 0.04644, params: {'estimator__max_depth': 7}, mean: 0.77118, std: 0.03946, params: {'estimator__max_depth': 8}, mean: 0.75662, std: 0.05312, params: {'estimator__max_depth': 9}]
+
+Estimator best params:
+
+{'estimator__max_depth': 5}
+
+Estimator mean grid scores:
+
+[0.65566360719382366, 0.75778919109369869, 0.78546394002783204, 0.80900756964695653, 0.8112165651766694, 0.80313069680934368, 0.79129433354901801, 0.7711807371394297, 0.75661851062321062]
+
+Best Estimator features used:
+
+Index([u'runs', u'p_wins'], dtype='object')
+
+----
+
+Predicting on data after 2000
+
+Confusion matrix with best decision tree from RFE CV grid:
+
+Predicted Label    0   1  All
+True Label                   
+0                202  16  218
+1                 26  12   38
+All              228  28  256
+
+
+
+
+
