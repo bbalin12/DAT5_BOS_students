@@ -17,16 +17,22 @@ CROSS_VALIDATION_AMOUNT =.2
 
 conn=sqlite3.connect('C:\\Users\\melaccor\\Documents\\SQLite\\lahman2013.sqlite')
 #Create a SQL table to pull data from all 4 Tables in the Baseball database: HallOfFame, Batting, Pitching, Fielding
-sql= """select a.playerID as playerID, max(a.inducted) as inducted, sum(g.Games) as games, sum(g.Hits) as hits, 
-sum(g.atbats) as atbats, sum(g.homeruns) as homeruns, sum(g.doubleplays) as doubleplays, sum(g.fielderassists) as fielderassists, sum(g.fielderrors) as fielderrors 
-from HallOfFame a 
-left outer join (select b.G as games, b.H as hits, b.AB as atbats, b.HR as homeruns, b.playerID, e.fielderassists, e.doubleplays, e.fielderrors  
-from Batting b
-left outer join (select d.playerID, d.A as fielderassists, d.E as fielderrors, d.DP as doubleplays from Fielding d) e on b.playerID = e.playerID)g
-on a.playerID = g.playerID
-where yearID<2000
-and g.games is not null 
-group by a.playerID;"""
+sql= """select a.playerID, a.inducted as inducted, batting.*, pitching.*, fielding.* from
+(select playerID, case when avginducted = 0 then 0 else 1 end as inducted from 
+(select playerID, avg(case when inducted = 'Y' then 1 else 0 end ) as avginducted from HallOfFame 
+where yearid < 2000
+group by playerID)) a 
+left outer join
+(select playerID,  sum(AB) as atbats, sum(H) as totalhits, sum(R) as totalruns, sum(HR) as totalhomeruns, sum(SB) as stolenbases, sum(RBI) as totalRBI, sum(SO) as strikeouts, sum(IBB) as intentionalwalks
+from Batting
+group by playerID) batting on batting.playerID = a.playerID
+left outer join(select playerID, sum(G) as totalgames, sum(SO) as shutouts, sum(sv) as totalsaves, sum(H) as totalhits, sum(er) as earnedruns, sum(so) as strikeouts, sum(WP) as wildpitches, sum(R) as totalruns
+from Pitching
+group by playerID) pitching on pitching.playerID = a.playerID 
+left outer join
+(select playerID, sum(G) as games, sum(InnOuts) as timewithouts, sum(PO) as putouts, sum(E) as errors, sum(DP) as doubleplays, sum(A) as fielderassists, sum(E) as fielderrors
+from Fielding
+group by playerID) fielding on fielding.playerID = a.playerID;"""
 df= pandas.read_sql(sql,conn)
 conn.close()
 df.dropna(inplace=True)
@@ -35,7 +41,7 @@ df.dropna(inplace=True)
 
 #separate response variable from explanatory variables
 response_series = df.inducted
-explanatory_vars = df[['games','hits','atbats','homeruns','doubleplays','fielderassists','fielderrors']]
+explanatory_vars = df[['games','totalhits','atbats','totalhomeruns','doubleplays','fielderassists','fielderrors']]
 
 # designating the number of observations we need to hold out
 holdout_num = round(len(df.index) * CROSS_VALIDATION_AMOUNT, 0)
