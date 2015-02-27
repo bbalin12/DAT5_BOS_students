@@ -1,0 +1,123 @@
+Homework #9
+
+
+New Data Process
+Retransform new data the same way you transformed
+Remove any nonsignificant features
+Predict on that data
+
+1. split categorical data from numeric
+	on categorical:
+		replace strings not appearing in finalized training data with 'Other'
+		binarize/encode
+	on numeric:
+		impute
+2. merge the two
+3. reduce columns used to RFECV determined as "final" column set
+4. scale data
+5. pass to estimator
+
+Query: 
+
+"""
+SELECT (m.nameFirst||" "||nameLast) as p_name, m.height as height, m.weight as weight, m.bats as bats, m.throws as throws,
+dom_team, inducted, bat_league, bat_runs, bat_hits, at_bats, bat_homeruns, bat_strikes, bat_stolen, bat_baseballs, bat_intentwalks
+pitch_wins, pitch_strikes, pitch_shuts, pitch_ERA, pitch_wild, pitch_saves,
+f_putouts, f_assists, f_errors FROM Master m
+INNER JOIN
+(SELECT pID, dom.teamID as dom_team, inducted, 
+bat_league, bat_runs, bat_hits, at_bats, bat_homeruns, bat_strikes, bat_stolen, bat_RBI, bat_caught, bat_baseballs,
+bat_intentwalks, pitch_wild, pitch_games, pitch_saves, pitch_earnruns, pitch_runsallowed,
+pitch_wins, pitch_strikes, pitch_shuts, pitch_ERA, f_putouts, f_assists, f_errors FROM dominant_team_per_player dom
+INNER JOIN
+(SELECT h.playerID as pID, max(CASE WHEN h.inducted='Y' THEN 1 ELSE 0 END) as inducted, 
+bat_league, bat_runs, bat_hits, at_bats, bat_homeruns, bat_strikes, bat_stolen, bat_RBI, bat_caught, bat_baseballs,
+bat_intentwalks, pitch_wild, pitch_games, pitch_saves, pitch_earnruns, pitch_runsallowed,
+pitch_wins, pitch_strikes, pitch_shuts, pitch_ERA, f_putouts, f_assists, f_errors FROM HallofFame h
+INNER JOIN
+(SELECT f.playerID, f.PO as f_putouts, f.A as f_assists, f.E as f_errors, 
+bat_league, bat_runs, bat_hits, at_bats, bat_homeruns, bat_RBI, bat_caught, bat_baseballs, bat_intentwalks,
+bat_strikes, bat_stolen, pitch_wins, pitch_strikes, pitch_shuts, pitch_ERA, pitch_wild, pitch_games, pitch_saves,
+pitch_earnruns, pitch_runsallowed FROM Fielding f
+LEFT JOIN
+(SELECT b.playerID, b.lgID as bat_league, sum(b.R) as bat_runs, sum(b.H) as bat_hits, sum(b.CS) as bat_caught, sum(b.BB) as bat_baseballs,
+sum(b.AB) as at_bats, sum(b.HR) as bat_homeruns, sum(b.RBI) as bat_RBI, sum(b.SO) as bat_strikes, sum(b.SB) as bat_stolen,
+sum(b.IBB) as bat_intentwalks,
+sum(p.W) as pitch_wins, sum(p.SO) as pitch_strikes, sum(p.SHO) as pitch_shuts, avg(1/p.ERA) as pitch_ERA, sum(p.WP) as pitch_wild,
+sum(p.G) as pitch_games, sum(p.SV) as pitch_saves, sum(p.ER) as pitch_earnruns, sum(p.R) as pitch_runsallowed 
+FROM Batting b
+LEFT JOIN Pitching p on p.playerID = b.playerID
+GROUP BY b.playerID) batpitch on batpitch.playerID = f.playerID
+GROUP BY batpitch.playerID) positions
+ON positions.playerID = h.playerID
+WHERE h.yearID < 2000 and h.yearID > 1950
+GROUP BY h.playerID) all_features on pID = dom.playerID) all_data on pID = m.playerID
+"""
+
+
+Best Maximum Depth = 2
+No need to do a grid search for maximum depth
+
+Mean Grid Score on training data is 71.9%
+
+Accuracy is about 81.9%
+ROC is about 63.3%
+Much worse prediction than the other methods previously chosen. The addition of categorical features such as the dominant team per player seem to have affected the accuracy by a significant amount.
+
+Feature Importances:
+                  importance
+bat_runs            0.162086
+at_bats             0.142780
+bat_hits            0.113377
+bat_homeruns        0.099056
+f_errors            0.087676
+height              0.077402
+bat_stolen          0.057843
+bat_strikes         0.055832
+bats_L              0.054275
+f_assists           0.052059
+dom_team_Other      0.037650
+pitch_ERA           0.034227
+pitch_strikes       0.019884
+dom_team_OAK        0.005856
+dom_team_PHI        0.000000
+dom_team_KCA        0.000000
+dom_team_LAN        0.000000
+dom_team_MIN        0.000000
+dom_team_ML4        0.000000
+dom_team_MON        0.000000
+dom_team_NYA        0.000000
+dom_team_NYN        0.000000
+dom_team_PIT        0.000000
+dom_team_TOR        0.000000
+dom_team_SDN        0.000000
+bat_league_NL       0.000000
+dom_team_SEA        0.000000
+bat_league_AL       0.000000
+dom_team_DET        0.000000
+dom_team_SFN        0.000000
+dom_team_SLN        0.000000
+dom_team_TEX        0.000000
+dom_team_HOU        0.000000
+dom_team_CAL        0.000000
+dom_team_COL        0.000000
+bats_R              0.000000
+bat_baseballs       0.000000
+pitch_wins          0.000000
+pitch_shuts         0.000000
+pitch_wild          0.000000
+pitch_saves         0.000000
+f_putouts           0.000000
+bats_B              0.000000
+bats_Other          0.000000
+throws_L            0.000000
+dom_team_CLE        0.000000
+throws_R            0.000000
+dom_team_ATL        0.000000
+dom_team_BAL        0.000000
+dom_team_BOS        0.000000
+weight              0.000000
+dom_team_CHA        0.000000
+dom_team_CHN        0.000000
+dom_team_CIN        0.000000
+bat_league_Other    0.000000
