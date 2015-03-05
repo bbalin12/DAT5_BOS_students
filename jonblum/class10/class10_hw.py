@@ -344,7 +344,6 @@ dt_roc_scores = cross_val_score(dt_estimator, explanatory_df, response_series, c
 print dt_roc_scores.mean()
 # 0.795136200569
 
-
 lc_roc_scores = cross_val_score(lc_estimator, explanatory_df, response_series, cv=10, scoring='roc_auc', n_jobs = -1)
 print lc_roc_scores.mean()
 # 0.714901355828
@@ -353,4 +352,4 @@ knn_roc_scores = cross_val_score(knn_estimator, explanatory_df, response_series,
 print knn_roc_scores.mean()
 # 0.732464634297
 
-# Random Forest is best in this case, particularly considering the minimal tuning it requires
+# Random Forest is best in this case, particularly considering the minimal tuning it requires.
