@@ -1,0 +1,31 @@
+Homework #11
+
+K-Means Clustering
+- Gives 3 clusters
+
+DBSCAN
+- Gives 2 clusters
+
+Dendrogram
+Cutoff at 1.75 to get 3 clusters
+
+PCA
+Mean ROC Score for Small Group of PCA: 0.731
+Mean ROC Score for Raw Data: 0.908
+Mean ROC Score for 6-Component PCA: 0.757
+
+SVM
+Mean ROC Scores for the Small Group PCA SVM: 0.755
+Best Kernel Function: rbf
+Best ROC Scores for SVM: 0.852
+
+Prediction after 2000
+Random Forest Mean ROC AUC 0.851
+	Number of Trees in Best Estimator: 370
+	Random Forest Accuracy for Best Estimator : 0.862
+Boosting Tree Mean ROC AUC 0.754
+	n_estimators: 40
+	subsample: 0.6
+	learning_rate: 0.13
+	Best Boosting Score 0.836
+SVM Best Score: 0.823

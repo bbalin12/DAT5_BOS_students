@@ -1,0 +1,80 @@
+Homework #10
+
+Updated Parameters
+inducted, bat_league, bat_runs, bat_hits, at_bats, bat_homeruns, bat_RBI, bat_baseballs, bat_intentwalks, bat_strikes,
+pitch_wins, pitch_strikes, pitch_shuts, pitch_ERA, pitch_wild, pitch_games, pitch_saves, pitch_earnruns, pitch_runsallowed, pitch_finish, pitch_outs, 
+pitch_hits, pitch_opp_BA, f_putouts, f_assists, f_errors
+
+
+Baseline is the Decision Tree
+Decision Tree Mean ROC AUC: 0.697
+
+# Random Forest
+Random Forest Mean ROC AUC: 0.910
+# of Trees in the Best Random Forest: 340
+Best Random Tree Estimator Score: 0.918
+
+# Boosting Tree
+Boosting Tree Mean ROC AUC: 0.900
+Best Parameters
+	n_estimators: 80
+	subsample: 0.6
+	learning rate: 0.05
+Best Boosting Tree Score: 0.917
+
+# Neural Network
+Best Neural Network Score: 0.729
+Best Parameters
+	neural components: 400 
+	learning rate: 0.01
+	neural iterations: 30
+
+
+
+SELECT (m.nameFirst||" "||nameLast) as p_name, m.height as height, m.weight as weight, m.bats as bats, m.throws as throws,
+inducted, bat_league, bat_runs, bat_hits, at_bats, bat_homeruns, bat_RBI, bat_baseballs, bat_intentwalks, bat_strikes,
+pitch_wins, pitch_strikes, pitch_shuts, pitch_ERA, pitch_wild, pitch_games, pitch_saves, pitch_earnruns, pitch_runsallowed, pitch_finish, pitch_outs, 
+pitch_hits, pitch_opp_BA, f_putouts, f_assists, f_errors FROM Master m
+INNER JOIN
+(SELECT pID, dom.teamID as dom_team, inducted, 
+bat_league, bat_runs, bat_hits, at_bats, bat_homeruns, bat_RBI, bat_caught, bat_baseballs, 
+bat_intentwalks, bat_doubles, bat_triples, bat_strikes, bat_stolen, 
+pitch_wins, pitch_strikes, pitch_shuts, pitch_ERA, pitch_wild, pitch_games, pitch_saves,
+pitch_earnruns, pitch_runsallowed, pitch_finish, pitch_outs, pitch_hits, pitch_opp_BA, 
+f_putouts, f_assists, f_errors FROM dominant_team_per_player dom
+INNER JOIN
+(SELECT h.playerID as pID, max(CASE WHEN h.inducted='Y' THEN 1 ELSE 0 END) as inducted, 
+bat_league, bat_runs, bat_hits, at_bats, bat_homeruns, bat_RBI, bat_caught, bat_baseballs, 
+bat_intentwalks, bat_doubles, bat_triples, bat_strikes, bat_stolen, 
+pitch_wins, pitch_strikes, pitch_shuts, pitch_ERA, pitch_wild, pitch_games, pitch_saves,
+pitch_earnruns, pitch_runsallowed, pitch_finish, pitch_outs, pitch_hits, pitch_opp_BA, 
+f_putouts, f_assists, f_errors FROM HallofFame h
+INNER JOIN
+(SELECT f.playerID, f.PO as f_putouts, f.A as f_assists, f.E as f_errors, 
+bat_league, bat_runs, bat_hits, at_bats, bat_homeruns, bat_RBI, bat_caught, bat_baseballs, 
+bat_intentwalks, bat_doubles, bat_triples, bat_strikes, bat_stolen, 
+pitch_wins, pitch_strikes, pitch_shuts, pitch_ERA, pitch_wild, pitch_games, pitch_saves,
+pitch_earnruns, pitch_runsallowed, pitch_finish, pitch_outs, pitch_hits, pitch_opp_BA FROM Fielding f
+LEFT JOIN
+(SELECT b.playerID, b.lgID as bat_league, sum(b.R) as bat_runs, sum(b.H) as bat_hits, sum(b.CS) as bat_caught, sum(b.BB) as bat_baseballs,
+sum(b.AB) as at_bats, sum(b.HR) as bat_homeruns, sum(b.RBI) as bat_RBI, sum(b.SO) as bat_strikes, sum(b.SB) as bat_stolen,
+sum(b.IBB) as bat_intentwalks, sum(b.'2B') as bat_doubles, sum(b.'3B') as bat_triples,
+sum(p.W) as pitch_wins, sum(p.SO) as pitch_strikes, sum(p.SHO) as pitch_shuts, avg(p.ERA) as pitch_ERA, sum(p.WP) as pitch_wild,
+sum(p.G) as pitch_games, sum(p.SV) as pitch_saves, sum(p.ER) as pitch_earnruns, sum(p.R) as pitch_runsallowed, sum(p.GF) as pitch_finish, 
+sum(p.IPOuts) as pitch_outs, sum(p.HBP) as pitch_hits, sum(p.BAOpp) as pitch_opp_BA
+FROM Batting b
+LEFT JOIN Pitching p on p.playerID = b.playerID
+GROUP BY b.playerID) batpitch on batpitch.playerID = f.playerID
+GROUP BY batpitch.playerID) positions
+ON positions.playerID = h.playerID
+WHERE h.yearID < 2000 AND h.yearID > 1965
+GROUP BY h.playerID) all_features on pID = dom.playerID) all_data on pID = m.playerID
+
+
+
+
+
+
+
+
+
