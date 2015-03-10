@@ -1,0 +1,29 @@
+--  compare AL and NL pitcher's ERAs for last 5 years.
+select yearID, league, avg(ERA) from 
+(select yearID, lgID as league, ERA from pitching)
+where yearID > 2008 and ERA is not null
+group by league, yearID
+
+-- compare AL and NL batting averages for last 5 years with a minimum of 30 at bats
+SELECT yearID, league, avg(batting_ave) from 
+(SELECT yearID, lgID as league, AB as at_bats, h as hits, (1.000 * h / AB) as batting_ave FROM batting
+where yearID > 2008 and at_bats is not null and at_bats > 30)
+GROUP BY yearID, league
+
+
+-- Determined that Octavio Eduardo played for the most teams(13) over 19 years
+-- and his last season was in 2012
+Select nameGiven, count(distinct teamID) as number_of_teams, count(yearID) as number_of_years,  max(yearID) as last_year  FROM 
+(Select c.playerID, c.yearID, c.teamID, m.nameGiven FROM
+(Select b.*, p.*  from Batting b
+LEFT JOIN pitching p on b.playerID = p.playerID and b.yearID = p.yearID and b.teamID = p.teamID) c
+LEFT JOIN Master m on c.playerID = m.playerID)
+GROUP BY playerID
+ORDER BY number_of_teams desc
+
+-- Determined that Michael Grant pitched the most games in a single season (106)
+Select c.*, case when G >= 60 THEN 1 ELSE 0 END as many_games_pitched FROM
+(Select m.nameGiven, p.* FROM Master M
+INNER JOIN Pitching p
+on m.playerID = p.playerID) c
+ORDER BY G DESC
