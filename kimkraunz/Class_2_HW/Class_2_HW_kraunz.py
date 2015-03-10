@@ -177,7 +177,6 @@ for year, subset in data.groupby('year'):
 plt.hist(data.votes.dropna(), bins=1000, color='#cccccc')
 plt.xlabel("Votes")
 plt.xscale('log')
-plt.ylabel("# of Movies")
 
 # xy scatter of runtime vs score
 plt.scatter(data.runtime, data.score, lw=0, alpha=.2, color='k')
