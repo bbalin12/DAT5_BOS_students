@@ -1,0 +1,39 @@
+Homework #7 Logistic Regression
+
+Significant Explanatory Variables
+	bat_runs
+	at_bats
+	bat_homeruns
+
+Large Model Score: 0.835514
+Small Model Score: 0.831776
+
+Large Coefficients
+                0                   1
+0       Intercept   [-0.873673471188]
+1          height   [-0.568240658859]
+2          weight    [0.103975845968]
+3        bat_runs    [0.937498285901]
+4        bat_hits    [0.603810375537]
+5         at_bats   [-0.816789385559]
+6    bat_homeruns     [0.16933583413]
+7      bat_stolen   [0.0799153997259]
+8   bat_baseballs    [0.102641956594]
+9      pitch_wins   [-0.622075988606]
+10  pitch_strikes    [0.517079208349]
+11    pitch_shuts    [0.866052859653]
+12      pitch_ERA  [-0.0335883965278]
+13     pitch_wild   [-0.213815077772]
+14    pitch_saves    [0.458446919766]
+15      f_putouts    [0.121225764451]
+16      f_assists  [-0.0106632799653]
+17       f_errors   [0.0695920467894]
+
+Small Coefficients
+             0                  1
+0    Intercept  [-0.355711067742]
+1     bat_runs  [0.0199060098384]
+2      at_bats   [0.800328056832]
+3  pitch_shuts   [0.310921581116]
+4   pitch_wins  [0.0271114356587]
+
