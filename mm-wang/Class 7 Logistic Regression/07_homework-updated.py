@@ -32,10 +32,10 @@ def cleanup_data(df, cutoffPercent = .01):
 def get_binary_values(data_frame):
     """encodes cateogrical features in Pandas.
     """
-    all_columns = pandas.DataFrame( index = data_frame.index)
+    all_columns = pd.DataFrame( index = data_frame.index)
     for col in data_frame.columns:
-        data = pandas.get_dummies(data_frame[col], prefix=col.encode('ascii', 'replace'))
-        all_columns = pandas.concat([all_columns, data], axis=1)
+        data = pd.get_dummies(data_frame[col], prefix=col.encode('ascii', 'replace'))
+        all_columns = pd.concat([all_columns, data], axis=1)
     return all_columns
 #
 def find_zero_var(df):
@@ -77,7 +77,7 @@ def find_perfect_corr(df):
 
 # putting a setting into pandas that lets you print out the entire
 # DataFrame when you use the .head() method
-pandas.set_option('display.max_columns', None)
+pd.set_option('display.max_columns', None)
 
 
 con = sqlite3.connect('/Users/Margaret/Desktop/data_science/general_assembly/sqlite/lahman2013.sqlite')
@@ -110,7 +110,7 @@ ON positions.playerID = h.playerID
 WHERE h.yearID < 2000 AND h.yearID > 1965
 GROUP BY h.playerID) all_features on pID = dom.playerID) all_data on pID = m.playerID
 """
-df = pandas.read_sql(query, con)
+df = pd.read_sql(query, con)
 con.close()
 
 df.drop('p_name',  1, inplace = True)
@@ -151,10 +151,10 @@ encoded_data = get_binary_values(string_features)
 ## imputing features
 imputer_object = Imputer(missing_values='NaN', strategy='median', axis=0)
 imputer_object.fit(numeric_features)
-numeric_features = pandas.DataFrame(imputer_object.transform(numeric_features), columns = numeric_features.columns)
+numeric_features = pd.DataFrame(imputer_object.transform(numeric_features), columns = numeric_features.columns)
 
 ## pulling together numeric and encoded data.
-explanatory_df = pandas.concat([numeric_features, encoded_data],axis = 1)
+explanatory_df = pd.concat([numeric_features, encoded_data],axis = 1)
 explanatory_df.head()
 
 
@@ -169,10 +169,10 @@ explanatory_df.drop(no_correlation['toRemove'], 1, inplace = True)
 # scaling data
 scaler = preprocessing.StandardScaler()
 scaler.fit(explanatory_df)
-explanatory_df = pandas.DataFrame(scaler.transform(explanatory_df), columns = explanatory_df.columns)
+explanatory_df = pd.DataFrame(scaler.transform(explanatory_df), columns = explanatory_df.columns)
 
 # concatenanting response series and explanatory df
-transform_df = pandas.concat([response_series, explanatory_df], axis=1)
+transform_df = pd.concat([response_series, explanatory_df], axis=1)
 
 ##################
 # LOGISTICAL MODEL
@@ -182,14 +182,18 @@ largey, largeX = dmatrices('inducted ~ height+weight+bat_runs+bat_hits+at_bats+b
                 pitch_wild+pitch_saves+f_putouts+f_assists+f_errors', 
                 transform_df, return_type = "dataframe")
 print largeX.columns
+large_col = largeX.columns[1::]
 largey = np.ravel(largey)
 
+lg_explanatory_df = explanatory_df[large_col]
 
 smally, smallX = dmatrices('inducted ~ bat_runs+at_bats+pitch_shuts+pitch_wins', 
                 transform_df, return_type = "dataframe")
 print smallX.columns
+small_col = smallX.columns[1::]
 smally = np.ravel(smally)
 
+sm_explanatory_df = explanatory_df[small_col]
 
 lg_model = LogisticRegression()
 lg_model = lg_model.fit(largeX, largey)
@@ -225,10 +229,10 @@ mean_fpr = np.linspace(0, 1, 100)
 all_tpr = []
 
 for i, (train, test) in enumerate(cv):
-    lg_model.fit(explanatory_df.ix[train,], response_series.ix[train,])
-    probabilities = pd.DataFrame(lg_model.predict_proba(explanatory_df.ix[test,]))
+    lg_model.fit(lg_explanatory_df.ix[train,], response_series.ix[train,])
+    probabilities = pd.DataFrame(lg_model.predict_proba(lg_explanatory_df.ix[test,]))
     # Confusion Matrix
-    predicted_values = lg_model.predict(explanatory_df.ix[test])    
+    predicted_values = lg_model.predict(lg_explanatory_df.ix[test])    
     # Compute ROC curve and area the curve
     fpr, tpr, thresholds = roc_curve(response_series.ix[test], probabilities[1])
     mean_tpr += interp(mean_fpr, fpr, tpr)
@@ -254,10 +258,6 @@ plt.legend(bbox_to_anchor=(1.65,1.07))
 plt.show()
 
 # Small Model
-from scipy import interp
-from sklearn.metrics import roc_curve, auc
-from sklearn.cross_validation import StratifiedKFold
-
 cv = StratifiedKFold(response_series, n_folds=10)
 
 mean_tpr = 0.0
@@ -265,10 +265,10 @@ mean_fpr = np.linspace(0, 1, 100)
 all_tpr = []
 
 for i, (train, test) in enumerate(cv):
-    sm_model.fit(explanatory_df.ix[train,], response_series.ix[train,])
-    probabilities = pd.DataFrame(sm_model.predict_proba(explanatory_df.ix[test,]))
+    sm_model.fit(sm_explanatory_df.ix[train,], response_series.ix[train,])
+    probabilities = pd.DataFrame(sm_model.predict_proba(sm_explanatory_df.ix[test,]))
     # Confusion Matrix
-    predicted_values = sm_model.predict(explanatory_df.ix[test])    
+    predicted_values = sm_model.predict(sm_explanatory_df.ix[test])    
     # Compute ROC curve and area the curve
     fpr, tpr, thresholds = roc_curve(response_series.ix[test], probabilities[1])
     mean_tpr += interp(mean_fpr, fpr, tpr)

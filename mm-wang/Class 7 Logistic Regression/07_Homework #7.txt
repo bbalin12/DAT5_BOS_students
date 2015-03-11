@@ -28,12 +28,12 @@ Large Coefficients
 15      f_putouts    [0.121225764451]
 16      f_assists  [-0.0106632799653]
 17       f_errors   [0.0695920467894]
-
 Small Coefficients
              0                  1
-0    Intercept  [-0.355711067742]
-1     bat_runs  [0.0199060098384]
-2      at_bats   [0.800328056832]
-3  pitch_shuts   [0.310921581116]
-4   pitch_wins  [0.0271114356587]
+0    Intercept  [-0.814166423731]
+1     bat_runs    [1.63767718662]
+2      at_bats  [-0.851728924062]
+3  pitch_shuts   [0.622593424657]
+4   pitch_wins  [-0.113636543693]
+
 
