@@ -138,11 +138,11 @@ ax9.set_title('Strike Outs')
 ax10.scatter(df.walks, df.runs)
 ax10.set_title('Walks')
 ```
-![Hist1]()
+![Hist1](https://github.com/bbalin12/DAT5_BOS_students/blob/master/kimkraunz/Class_6_HW_LinearRegression/Hist1.png)
 
-![Hist2]()
+![Hist2](https://github.com/bbalin12/DAT5_BOS_students/blob/master/kimkraunz/Class_6_HW_LinearRegression/Hist2.png)
 
-![Scatter]()
+![Scatter](https://github.com/bbalin12/DAT5_BOS_students/blob/master/kimkraunz/Class_6_HW_LinearRegression/Scatter.png)
 
 I noticed that the majority of variables were skewed to the left.
 
@@ -203,7 +203,7 @@ df['m1_residuals']= df.runs - df.m1_yhat
 
 plt = df.plot(x='m1_yhat', y='m1_residuals', kind='scatter')
 ```
-![Heteroskedacity]()
+![Heteroskedacity](https://github.com/bbalin12/DAT5_BOS_students/blob/master/kimkraunz/Class_6_HW_LinearRegression/Heteroskedacity.png)
 
 I then calculated the RMSE
 
@@ -279,7 +279,7 @@ average deviation for model 1: 5.3633
 average deviation for model 2: 5.3633
 average deviation for model 3: 5.3398
 ```
-![Heteroskedacity3]()
+![Heteroskedacity3](https://github.com/bbalin12/DAT5_BOS_students/blob/master/kimkraunz/Class_6_HW_LinearRegression/Heteroskedacity3.png)
 
 The RMSE decreases and the Rsqaured increases slightly by making the years categorical.
 The heteroskedacity is still OK but not great.
@@ -346,7 +346,7 @@ average deviation for model 2: 5.3633
 average deviation for model 3: 5.3398
 average deviation for model 4: 5.1371
 ```
-![Heteroskedacity4]()
+![Heteroskedacity4](https://github.com/bbalin12/DAT5_BOS_students/blob/master/kimkraunz/Class_6_HW_LinearRegression/Heteroskedacity4.png)
 
 Adding hit by pitch and intentionally walked and removing at_bats both 
 lowered the RMSE and raised the Rsquared.  This dataset is large enough that it can absorb rare events and improve the model.  Again, the heteroskedacity is OK but not great.
@@ -410,6 +410,8 @@ average deviation for model 3: 5.3398
 average deviation for model 4: 5.1371
 average deviation for model 5: 5.349
 ```
+![Heteroskedacity5](https://github.com/bbalin12/DAT5_BOS_students/blob/master/kimkraunz/Class_6_HW_LinearRegression/Heteroskedacity5.png)
+
 
 Model 4 has the highest R squared and the lowest RMSE.  The intentional walks and hit by pitch had a larger effect in model 4 than the at_bats.  I will use model 4 to test whether the linear regression model can accurately predict runs scored.
 
@@ -463,7 +465,7 @@ print 'average deviation for M4 equation on post 2000 data: {0}'.format(
 average deviation for M4 equation on post 2005 data: 5.0724
 ```
 
-![Heteroskedacity5]()
+![Heteroskedacity6](https://github.com/bbalin12/DAT5_BOS_students/blob/master/kimkraunz/Class_6_HW_LinearRegression/Heteroskedacity6.png)
 
 ####Conclusion
 I still had a relatively low RMSE when I tested the linear regression model using data from 2006 and later.  By modifying the model's features I was able to create a stronger predictive model of runs scored in a year.

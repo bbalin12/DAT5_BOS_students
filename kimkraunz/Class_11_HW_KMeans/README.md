@@ -5,7 +5,7 @@
 ## Introduction
 I used the Lahman Baseball Database for all analysis. In this homework I used KMeans,  DBSCAN, and Hierarchical Clustering to analyze for clustering between total salaries vs. total runs per year in 1954 and later.   I also used Principal Component Analysis to try to find the best model components for prediction using Support Vector Machines, Random Forest, and Boosting Tree.
 
-## Unsupervised learning using KMeans, DBSCAN, and Hierarchical Clustering
+#### Unsupervised learning using KMeans, DBSCAN, and Hierarchical Clustering
 I used the following code to pull the total salaries and total runs grouped by year from the SQLite database.
 
 ```
@@ -33,7 +33,7 @@ plt.show()
 ```
 
 The plot clearly shows a relationship between total salaries and total runs over the years.
-![Total salaries vs. Total runs](https://github.com/GarAust89/DAT5_BOS_students/blob/master/GarAust89/Class_09%20HW/DecisionTreeOptimalFeatureSelection.png)
+![Total salaries vs. Total runs](https://github.com/bbalin12/DAT5_BOS_students/blob/master/kimkraunz/Class_11_HW_KMeans/salariesVSruns.png)
 
 #### Scaling data
 
@@ -66,15 +66,15 @@ for i, txt in enumerate(df.yearID):
     plt.annotate(txt, (df.total_salaries[i], df.total_runs[i]))
 plt.show()
 ```
-![KMeans 3 clusters](https://github.com/GarAust89/DAT5_BOS_students/blob/master/GarAust89/Class_09%20HW/DecisionTreeOptimalFeatureSelection.png)
+![KMeans 3 clusters](https://github.com/bbalin12/DAT5_BOS_students/blob/master/kimkraunz/Class_11_HW_KMeans/KMeans3.png)
 
 The plot shows the three clusters but I wondered what it would look like if I changed the number of clusters to four.  I found using four clusters to be a better clustering of the data.
 
-![KMeans 4 clusters](https://github.com/GarAust89/DAT5_BOS_students/blob/master/GarAust89/Class_09%20HW/DecisionTreeOptimalFeatureSelection.png)
+![KMeans 4 clusters](https://github.com/bbalin12/DAT5_BOS_students/blob/master/kimkraunz/Class_11_HW_KMeans/KMeans4.png)
 
 #### DBSCAN
 
-My next step was to use the follwing code to run DBSCAN to cluster the data and plot the results.  
+My next step was to use the following code to run DBSCAN to cluster the data and plot the results.  
 ```
 from sklearn.cluster import DBSCAN
 import numpy as np
@@ -90,7 +90,7 @@ plt.show()
 
 The following plot shows a nearly identical clustering of the data using DBSCAN as KMeans.
 
-![DBSCAN](https://github.com/GarAust89/DAT5_BOS_students/blob/master/GarAust89/Class_09%20HW/DecisionTreeOptimalFeatureSelection.png)
+![DBSCAN](https://github.com/bbalin12/DAT5_BOS_students/blob/master/kimkraunz/Class_11_HW_KMeans/DBSC.png)
 
 #### Hierarchical Clustering
 
@@ -113,11 +113,11 @@ cluster_output
 plt.scatter(df.total_salaries, df.total_runs, s=60, c=cluster_output.cluster)
 ```
 
-![Dendrogram](https://github.com/GarAust89/DAT5_BOS_students/blob/master/GarAust89/Class_09%20HW/GridSearchOptimalFeatureSelection.png)
+![Dendrogram](https://github.com/bbalin12/DAT5_BOS_students/blob/master/kimkraunz/Class_11_HW_KMeans/Dendrogram.png)
 
 Interestingly, using the dendrogram to cluster, it assigned five clusters instead of the four that DSCAN identified.  
 
-![DBSCAN](https://github.com/GarAust89/DAT5_BOS_students/blob/master/GarAust89/Class_09%20HW/DecisionTreeOptimalFeatureSelection.png)
+![DBSCAN](https://github.com/bbalin12/DAT5_BOS_students/blob/master/kimkraunz/Class_11_HW_KMeans/Dendrogram.png)
 
 When we compare it to the DBSCAN clustering, we see that the dendrogram clusters years 1993-2005 together and creates a separate cluster for years 2011-2013 while DBSCAN creates four distinct clusters of 1985-1992, 1993-1999, 2000-2008, and 2009-2013.  The clustering using DBSCAN produced the most clearly defined results.  Interestingly, there are clear trends within the clusters.  For instance, since 2009, both total salaries and total runs are trending downwards.
 
@@ -363,11 +363,11 @@ pca_df = pandas.DataFrame(pca.transform(explanatory_df))
 ## plotting the first to principal components
 pca_df.plot(x = 0, y= 1, kind = 'scatter')
 ```
-![PCA Scatter]()
+![PCA Scatter](https://github.com/bbalin12/DAT5_BOS_students/blob/master/kimkraunz/Class_11_HW_KMeans/Scatter.png)
 
 I then created a scree plot of the principal components versus the variance to understand the number of principal components that explain the variance.  From the plot, it is clear that the variance is reduced after 5 principal components.
 
-![PCA Scree]()
+![PCA Scree](https://github.com/bbalin12/DAT5_BOS_students/blob/master/kimkraunz/Class_11_HW_KMeans/PCAscree.png)
 
 ####Boosting Tree using features transformed with Principal Component Analysis
 I defined my explanatory features to the first two principal components and ran the Boosting Tree using 10 fold cross validation on the data.  I then compared the accuracy from the PCA transformed explanatory features to my non-transformed explanatory features using the Boosting Tree method.
@@ -648,24 +648,24 @@ All              231  50  281
 rf_cm = pandas.crosstab(post2000_response_series, rf_pred_post2000_inductions, rownames=['True Label'], colnames=['Predicted Label'], margins=True)
 
 print rf_cm
-'''
+
 Predicted Label    0   1  All
 True Label                   
 0                200  19  219
 1                 21  41   62
 All              221  60  281
-'''
+
 
 gbm_cm = pandas.crosstab(post2000_response_series, gbm_pred_post2000_inductions, rownames=['True Label'], colnames=['Predicted Label'], margins=True)
 
 print gbm_cm
-'''
+
 Predicted Label    0   1  All
 True Label                   
 0                200  19  219
 1                 20  42   62
 All              220  61  281
-'''
+
 ```
 I calculated the specificity and sensitivity:
 
