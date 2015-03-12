@@ -1,0 +1,26 @@
+Random Forest Classifier:
+
+Grid search for optimal number of trees in range (10,600) by 10
+
+best n_estimators: 410
+best accuracy score: 0.89124940539
+
+-----
+
+Gradient Boosting Classifier:
+
+Grid search for optimal learning rate, subsample, and estimators
+
+best params: {'n_estimators': 90, 'subsample': 0.5, 'learning_rate': 0.12999999999999998}
+score: 0.893746842287
+
+-----
+
+Neural Network Classifier:
+
+Grid search for learning rate, interations, and components
+
+best params: {'neural_net__n_components': 450, 'neural_net__learning_rate': 0.060000000000000005, 'neural_net__n_iter': 45}
+score: 0.788142400659
+
+
