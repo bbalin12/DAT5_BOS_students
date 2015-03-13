@@ -65,8 +65,11 @@ df.columns
 
 ####Data Manipulation
 I manipulated the data in the following ways:
+
 1. I created a binary variable inducted1 from the inducted variable
+
 2. I created a years_played variable from the years_pitched and years_batted variables
+
 3. Finally, I dropped unneccessary variables (playerID, inducted, years_pitched, years_batter), variables with perfect correlation(total_2B), and variables that did not add to the model (birthCountry, total_post_RBIs) as determined in Homework 9
 
 ```
@@ -348,7 +351,7 @@ num_of_allstar_games     0.0506      0.023      2.197      0.028         0.005  
 
 ```
 
-I had previously used statsmodel to run the logistic regresion but then imported LogisticRegression to run a 10-fold cross validation.
+I had previously used statsmodel to run the logistic regresion but then imported scikit learn’s LogisticRegression to run a 10-fold cross validation.
 
 ```
 # Cross-validation
@@ -404,7 +407,7 @@ plt.xlabel('Number of All Star games')
 plt.ylabel('Number of years on the Hall of Fame ballot')
 plt.legend(loc = 'best')
 ```
-![ScatterwithSeparation]()
+![ScatterwithSeparation](https://github.com/bbalin12/DAT5_BOS_students/blob/master/kimkraunz/Class_7_HW_LogisticRegression/ScatterwithSeparation.png)
 
 
 #### Conclusions

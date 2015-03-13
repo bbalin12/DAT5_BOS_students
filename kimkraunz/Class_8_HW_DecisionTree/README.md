@@ -117,22 +117,22 @@ y_predicted = naive_bayes_classifier.fit(xTrain, yTrain).predict(xTest)
 cm = pandas.crosstab(yTest, y_predicted, rownames=['True Label'], colnames=['Predicted Label'], margins=True)
 
 print cm
-'''
+
 Predicted Label    0    1  All
 True Label                    
 0                132   84  216
 1                 17   52   69
 All              149  136  285
-'''
+
 ```
 From the confusion matrix, I determined the sensitivity and specificity.
 
 sensitivity = 52/(17+52) = 75%
+
 specificity = 132/(132+84) = 61%
 
 Neither of those are stellar.  The model is almost equally as bad at classifying those that are inducted as not inducted and those that are not inducted as being inducted.
 
-```
 
 ####Model Evaluation
 I then evaluated the strength of the model based on 10-fold cross-validated accuracy, Cohen's Kappa, F1, and ROC scores.
@@ -276,24 +276,6 @@ print roc_scores.mean()
 
 The accuracy of predicting Hall of Fame induction by the Decision Tree model was higher than the accuracy of the Naive Bayes model across all metrics for evaluating models.  However, the Decision Tree model was still not highly accurate.
 
-I then printed a ROC curve of False Positive Rate vs. True Positive Rate.
-
-```
-# ROC curve
-predicted_probs = pandas.DataFrame(decision_tree.predict_proba(xTest))
-
-from sklearn import metrics
-import matplotlib.pyplot as plt
-
-fpr_cart, tpr_cart, thresholds_cart = metrics.roc_curve(yTest, predicted_probs[1])
-plt.figure()
-plt.plot(fpr_cart, tpr_cart, color = 'b')
-plt.xlabel('False Positive Rate (1 - Specificity)')
-plt.ylabel('True Positive Rate (Sensitivity)')
-```
-![DecisionTreeROC]()
-
-Looks fairly decent but could be better.
 
 ####K Nearest Neighbor (KNN)
 
@@ -387,7 +369,7 @@ plt.xlabel('False Positive Rate (1 - Specificity)')
 plt.ylabel('True Positive Rate (Sensitivity)')
 ```
 
-![ROC]()
+![ROC](https://github.com/bbalin12/DAT5_BOS_students/blob/master/kimkraunz/Class_8_HW_DecisionTree/ROC.png)
 
 The KNN and Decision Tree models both show fairly decent ROC curves.
 

@@ -113,9 +113,12 @@ def find_perfect_corr(df):
 
 ####Data Manipulation
 I manipulated the data in the following ways:
+
 1. I created a binary variable inducted1 from the inducted variable
+
 2. I created a years_played variable from the years_pitched and years_batted variables
 3. I dropped unneccessary variables (playerID, inducted, years_pitched, years_batter), variables with perfect correlation(total_2B), and variables that did not add to the model (birthCountry, total_post_RBIs) as determined in Homework 9
+
 4. I also dropped final_year_voted since it is a time series variable and we haven't covered it yet.
 
 ```
@@ -161,7 +164,7 @@ explanatory_df.describe()
 #### Data Cleaning
 I cleaned the data by first splitting the explanatory variables in to string and numeric data.  I then filled any Nans in the categorical data with 'Nothing' and created the birthCountry_USA variable as a binary variable.  I filled any Nans in the numerical data with the feature median.  Finally, I merged the string and numerical data back together into a Pandas dataframe.  I used the features indentified with Recursive Feature Elimination in HW 9.
 
-#####1. Split data into categorical and numeric data
+####1. Split data into categorical and numeric data
 ```
 string_features = explanatory_df.ix[: , explanatory_df.dtypes == 'object']
 numeric_features = explanatory_df.ix[: , explanatory_df.dtypes != 'object']
@@ -237,7 +240,7 @@ plt.xticks(numpy.arange(0.5, len(toChart.columns), 1), toChart.columns, rotation
 plt.colorbar()
 plt.show()
 ```
-![ColorCorrelationMatrix]()
+![ColorCorrelationMatrix](https://github.com/bbalin12/DAT5_BOS_students/blob/master/kimkraunz/Class_9_HW_Data_Cleaning/ColorCorrelationMatrix.png)
 
 The color correlation matrix was only used with the first 25 variables.  You can see clear correlation between total_2B and total_3B.  You can also see a strong correlation between years_played and total_2B and total_3B.
 
@@ -300,7 +303,7 @@ plt.ylabel("Cross validation score (ROC_AUC)")
 plt.plot(range(1, len(rfe_cv.grid_scores_) + 1), rfe_cv.grid_scores_)
 plt.show()
 ```
-![DecisionTreeFeaturesUsed]()
+![DecisionTreeFeaturesUsed](https://github.com/bbalin12/DAT5_BOS_students/blob/master/kimkraunz/Class_9_HW_Data_Cleaning/DecisionTreeFeaturesUsed.png)
 
 There is a clear spike at 6 features used.
 
@@ -348,7 +351,7 @@ plt.plot(rfe_grid_search.best_params_['estimator__max_depth'], rfe_grid_search.b
          markerfacecolor='None', markeredgecolor='r')
 plt.grid(True)
 ```
-![DecisionTreeMaxDepthOpt]()
+![DecisionTreeMaxDepthOpt](https://github.com/bbalin12/DAT5_BOS_students/blob/master/kimkraunz/Class_9_HW_Data_Cleaning/DecisionTreeMaxDepthOpt.png)
 
 I printed out the best features.
 ```

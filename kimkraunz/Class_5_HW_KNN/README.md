@@ -73,7 +73,8 @@ df.head(30)
 ```
 
 ####Defining explanatory and response variables
-    
+
+```   
 # defines the dependent variable (y variable) as the series inducted in the dataframe
 response_series = df.inducted
 
@@ -113,7 +114,7 @@ explanatory_test = explanatory_variables.ix[test_indices,]
 # checks the response_test and explanatory_test series
 response_test.head()
 explanatory_test.head()
-
+```
 ####K Nearest Neighbor with Grid Search
 
 ######Model 1
@@ -143,7 +144,7 @@ print k_range, grid_mean_scores
 [1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29] [0.80021598272138228, 0.82181425485961124, 0.8434125269978402, 0.85313174946004322, 0.85853131749460043, 0.86069114470842334, 0.85637149028077753, 0.85313174946004322, 0.85097192224622031, 0.84449244060475159, 0.8434125269978402, 0.84449244060475159, 0.84125269978401729, 0.83693304535637147, 0.83477321814254857]
 ```
 
-![KNNgridsearch1]
+![KNNgridsearch1](https://github.com/bbalin12/DAT5_BOS_students/blob/master/kimkraunz/Class_5_HW_KNN/KNNgridsearch1.png)
 
 The k that maximized the accuracy of the model is 11.  The accuracy of the 10-fold cross validated model is 86%.
 
@@ -241,7 +242,7 @@ print k_range, grid_mean_scores
 [1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29] [0.80453563714902809, 0.83801295896328298, 0.8466522678185745, 0.85421166306695462, 0.85853131749460043, 0.85961123110151183, 0.85421166306695462, 0.85097192224622031, 0.8466522678185745, 0.8466522678185745, 0.84449244060475159, 0.84125269978401729, 0.84017278617710578, 0.83369330453563717, 0.83045356371490275]
 ```
 
-![KNNgridsearch2]()
+![KNNgridsearch2](https://github.com/bbalin12/DAT5_BOS_students/blob/master/kimkraunz/Class_5_HW_KNN/KNNgridsearch2.png)
 
 The accuracy remained around 86% on the training data.  I used my model to predict Hall of Fame induction with the test data.
 
@@ -334,6 +335,7 @@ print k_range, grid_mean_scores
 0.858531317495
 [1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29] [0.80237580993520519, 0.83693304535637147, 0.8455723542116631, 0.85421166306695462, 0.85853131749460043, 0.85853131749460043, 0.85421166306695462, 0.85097192224622031, 0.8466522678185745, 0.8466522678185745, 0.84125269978401729, 0.84125269978401729, 0.84017278617710578, 0.83261339092872566, 0.83045356371490275]
 ```
+![KNNGridSearch3](https://github.com/bbalin12/DAT5_BOS_students/blob/master/kimkraunz/Class_5_HW_KNN/KNNgridsearch3.png)
 
 I see that accuracy decreases slightly and that a k of either 9 or 11 is optimal.
 
