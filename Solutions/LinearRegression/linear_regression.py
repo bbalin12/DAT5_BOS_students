@@ -24,7 +24,7 @@ import statsmodels.formula.api as smf
 # this is the percent we want to hold out for our cross-validation.
 CROSS_VALIDATION_AMOUNT = .2
 
-conn = sqlite3.connect('/Users/harishkashyap/Documents/SQLite/lahman2013.sqlite')
+conn = sqlite3.connect('../../data/lahman2013.sqlite')
 
 sql = """
 select yearID, 
@@ -171,7 +171,7 @@ print 'average deviation model 2: {0}%'.format(round(percent_avg_dev_years*100, 
 
 # Seems like we've gotten pretty close
 # let's look at data after 2005.
-conn = sqlite3.connect('/Users/harishkashyap/Documents/SQLite/lahman2013.sqlite')
+conn = sqlite3.connect('../../data/lahman2013.sqlite')
 # creating an object contraining a string that has the SQL query. 
 sql = """
 select nameGiven, yearID,
