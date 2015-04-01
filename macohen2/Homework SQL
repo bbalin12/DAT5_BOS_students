@@ -1,0 +1,48 @@
+-- 4 Novel Questions
+-- #1: Top 10 hit leaders
+SELECT m.nameGiven, b.playerID, sum(b.h) as hits
+from Batting b
+LEFT OUTER JOIN Master m ON m.playerID = b.playerID
+GROUP BY b.playerID
+ORDER BY hits desc;
+
+-- #2: Best All Around season for pitcher (most wins + hits)
+SELECT b.playerID, b.yearID,b.teamID, b.H, p.playerID, p.W from Batting b
+INNER JOIN Pitching p on b.playerID = p.playerID
+WHERE p.W > 10 AND b.H IS NOT NULL
+ORDER BY p.W DESC, b.H DESC;
+
+-- #3: Which year did the most players play in the MLB?
+SELECT COUNT(DISTINCT playerID) as players, yearID from batting
+GROUP BY yearID
+ORDER BY players DESC;
+
+-- #4: Which player had the highest season salary?
+SELECT sal.salary, b.playerID, b.yearID, b.teamID FROM Batting b
+LEFT OUTER JOIN
+(SELECT playerID, salary from Salaries
+GROUP BY playerID) sal ON sal.playerID = b.playerID
+WHERE salary IS NOT NULL
+ORDER BY salary DESC;
+
+
+
+import pandas
+import sqlite3
+
+
+conn = sqlite3.connect('/Users/MatthewCohen/Documents/SQLite/lahman2013.sqlite')
+
+sql = 'SELECT * FROM fielding'
+
+df = pandas.read_sql(sql, conn)
+
+conn.close()
+
+df['games_from_bench'] = df.G - df.GS
+
+conn = sqlite3.connect('/Users/MatthewCohen/Documents/SQLite/lahman2013.sqlite')
+
+df.to_sql('pandas_table', conn, if_exists = 'replace')
+
+conn.close()
