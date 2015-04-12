@@ -1,51 +1,51 @@
-[cb2004]: /images/camerabrands2004.jpg
-[cb2005]: /images/camerabrands2005.jpg
-[cb2006]: /images/camerabrands2006.jpg
-[cb2007]: /images/camerabrands2007.jpg
-[cb2008]: /images/camerabrands2008.jpg
-[cb2009]: /images/camerabrands2009.jpg
-[cb2010]: /images/camerabrands2010.jpg
-[cb2011]: /images/camerabrands2011.jpg
-[cb2012]: /images/camerabrands2012.jpg
-[cb2013]: /images/camerabrands2013.jpg
-[cb2014]: /images/camerabrands2014.jpg
+[cb2004]: /Project/images/camerabrands2004.jpg
+[cb2005]: /Project/images/camerabrands2005.jpg
+[cb2006]: /Project/images/camerabrands2006.jpg
+[cb2007]: /Project/images/camerabrands2007.jpg
+[cb2008]: /Project/images/camerabrands2008.jpg
+[cb2009]: /Project/images/camerabrands2009.jpg
+[cb2010]: /Project/images/camerabrands2010.jpg
+[cb2011]: /Project/images/camerabrands2011.jpg
+[cb2012]: /Project/images/camerabrands2012.jpg
+[cb2013]: /Project/images/camerabrands2013.jpg
+[cb2014]: /Project/images/camerabrands2014.jpg
 
-[us]: /images/us.jpg
-[kmclusters]: /images/kmeans_15clusters.jpg
-[kmcenters]: /images/kmeans_15clustercenters.jpg
-[kmsil]: /images/kmeans_silhouette.jpg
+[us]: /Project/images/us.jpg
+[kmclusters]: /Project/images/kmeans_15clusters.jpg
+[kmcenters]: /Project/images/kmeans_15clustercenters.jpg
+[kmsil]: /Project/images/kmeans_silhouette.jpg
 
-[cl2000]: /images/clusters_2000color.jpg
-[cl2001]: /images/clusters_2001color.jpg
-[cl2002]: /images/clusters_2002color.jpg
-[cl2003]: /images/clusters_2003color.jpg
-[cl2004]: /images/clusters_2004color.jpg
-[cl2005]: /images/clusters_2005color.jpg
-[cl2006]: /images/clusters_2006color.jpg
-[cl2007]: /images/clusters_2007color.jpg
-[cl2008]: /images/clusters_2008color.jpg
-[cl2009]: /images/clusters_2009color.jpg
-[cl2010]: /images/clusters_2010color.jpg
-[cl2011]: /images/clusters_2011color.jpg
-[cl2012]: /images/clusters_2012color.jpg
-[cl2013]: /images/clusters_2013color.jpg
-[cl2014]: /images/clusters_2014color.jpg
+[cl2000]: /Project/images/clusters_2000color.jpg
+[cl2001]: /Project/images/clusters_2001color.jpg
+[cl2002]: /Project/images/clusters_2002color.jpg
+[cl2003]: /Project/images/clusters_2003color.jpg
+[cl2004]: /Project/images/clusters_2004color.jpg
+[cl2005]: /Project/images/clusters_2005color.jpg
+[cl2006]: /Project/images/clusters_2006color.jpg
+[cl2007]: /Project/images/clusters_2007color.jpg
+[cl2008]: /Project/images/clusters_2008color.jpg
+[cl2009]: /Project/images/clusters_2009color.jpg
+[cl2010]: /Project/images/clusters_2010color.jpg
+[cl2011]: /Project/images/clusters_2011color.jpg
+[cl2012]: /Project/images/clusters_2012color.jpg
+[cl2013]: /Project/images/clusters_2013color.jpg
+[cl2014]: /Project/images/clusters_2014color.jpg
 
-[Pacific Northwest]: /images/prediction_cluster0.jpg
-[Mid-Atlantic]: /images/prediction_cluster1.jpg
-[Hawaii]: /images/prediction_cluster2.jpg
-[South]: /images/prediction_cluster3.jpg
-[Alaska]: /images/prediction_cluster4.jpg
-[Southwest]: /images/prediction_cluster5.jpg
-[Central America]: /images/prediction_cluster6.jpg
-[Northern Mountains]: /images/prediction_cluster7.jpg
-[Great Lakes]: /images/prediction_cluster8.jpg
-[Southeast]: /images/prediction_cluster9.jpg
-[California]: /images/prediction_cluster10.jpg
-[Northeast]: /images/prediction_cluster11.jpg
-[Caribbean]: /images/prediction_cluster12.jpg
-[Rocky Mountains]: /images/prediction_cluster13.jpg
-[Western Canada]: /images/prediction_cluster14.jpg
+[Pacific Northwest]: /Project/images/prediction_cluster0.jpg
+[Mid-Atlantic]: /Project/images/prediction_cluster1.jpg
+[Hawaii]: /Project/images/prediction_cluster2.jpg
+[South]: /Project/images/prediction_cluster3.jpg
+[Alaska]: /Project/images/prediction_cluster4.jpg
+[Southwest]: /Project/images/prediction_cluster5.jpg
+[Central America]: /Project/images/prediction_cluster6.jpg
+[Northern Mountains]: /Project/images/prediction_cluster7.jpg
+[Great Lakes]: /Project/images/prediction_cluster8.jpg
+[Southeast]: /Project/images/prediction_cluster9.jpg
+[California]: /Project/images/prediction_cluster10.jpg
+[Northeast]: /Project/images/prediction_cluster11.jpg
+[Caribbean]: /Project/images/prediction_cluster12.jpg
+[Rocky Mountains]: /Project/images/prediction_cluster13.jpg
+[Western Canada]: /Project/images/prediction_cluster14.jpg
 
 
 # Predicting Travel Patterns Using Flickr
